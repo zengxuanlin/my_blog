@@ -18,7 +18,6 @@ class User(db.Model):
     nickName = db.Column(db.String(64))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     articles = db.relationship('Article', backref='articles')
-
     def __init__(self, username, password, age, address, nick, role_id):
         self.username = username
         # 加密
@@ -59,11 +58,12 @@ class Article(db.Model):
     title = db.Column(db.String(64))
     content = db.Column(db.Text)
     time = db.Column(db.DateTime,default=datetime.datetime.now, onupdate=datetime.datetime.now)
-
-    def __init__(self, author_id, title, content):
+    mdText = db.Column(db.Text)
+    def __init__(self, author_id, title, content,mdText):
         self.author_id = author_id
         self.title = title
         self.content = content
+        self.mdText = mdText
     def to_dict(self):
         t = self.__dict__
         del t['_sa_instance_state'] 

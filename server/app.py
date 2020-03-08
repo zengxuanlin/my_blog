@@ -28,14 +28,14 @@ with app.app_context():
     # db.session.add(test_user)
     # db.session.commit()
 
-    # c = Article(test_user.id,'今晚','很难受啊哈哈哈哈')
+    # c = Article(test_user.id,'今晚','很难受啊哈哈哈哈','很难受啊哈哈哈哈')
     # db.session.add(c)
     # db.session.commit()
 
     # common1 = Comment(c.id,'一位没姓名的网友','支持楼主~~~',)
     # common2 = Comment(c.id,'压缩','支持楼主~~~')
     # db.session.add_all([common1,common2])
-    # db.session.commit()
+    db.session.commit()
 
 
 

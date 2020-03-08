@@ -40,7 +40,7 @@ def publish():
         except Exception as e:
             return responseData('token过期或者失效', None, False)
         else:
-            artice = Article(uId, post_data['title'], post_data['content'])
+            artice = Article(uId, post_data['title'], post_data['content'],post_data['mdText'])
             db.session.add(artice)
             db.session.commit()
             return responseData('博文发布成功')
