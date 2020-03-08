@@ -1,13 +1,19 @@
 <template>
   <div class="page" >
     <p>文章管理</p>
-    <Table border :columns="columns1" :data="data1">
-        <template  slot="action" :slot-scope="{ row, index }">
-            <Button type="primary">编辑</Button>
+    <Table border :columns="columns1" :data="data1.list">
+        <template  slot="action" slot-scope="{ row, index }">
+            <Button type="primary" @click="handleEdit(row)">编辑</Button>
             <Button type="error" style="margin-left:10px">删除</Button>
         </template>
+         <template  slot="detail" slot-scope="{ row, index }">
+            <Button type="primary" @click="handleView(row)">查看</Button>
+        </template>
     </Table>
-    <Page :total="20"  style="margin-top:4rem"/>
+    <Page :total="data1.total"  style="margin-top:4rem"/>
+    <Drawer title="详情" :closable="false" v-model="showDetail"   width="640" >
+        <div v-html='content'></div>
+    </Drawer>
   </div>
 </template>
 
@@ -15,51 +21,45 @@
 export default {
   data() {
     return {
+      showDetail:false,
       columns1: [
         {
-          title: "Name",
-          key: "name"
+          title: "标题",
+          key: "title" 
         },
         {
-          title: "Age",
-          key: "age"
+          title: "内容",
+          slot: "detail"
         },
         {
-          title: "Address",
-          key: "address"
+          title: "发布时间",
+          key: "time"
         },
         {
             title:'操作',
             slot:'action'
         }
       ],
-      data1: [
-        {
-          name: "John Brown",
-          age: 18,
-          address: "New York No. 1 Lake Park",
-          date: "2016-10-03"
-        },
-        {
-          name: "Jim Green",
-          age: 24,
-          address: "London No. 1 Lake Park",
-          date: "2016-10-01"
-        },
-        {
-          name: "Joe Black",
-          age: 30,
-          address: "Sydney No. 1 Lake Park",
-          date: "2016-10-02"
-        },
-        {
-          name: "Jon Snow",
-          age: 26,
-          address: "Ottawa No. 2 Lake Park",
-          date: "2016-10-04"
-        }
-      ]
+      data1: {
+        list:[],
+        total:'0'
+      },
+      content:'',
     };
+  },
+  created(){
+    this.$ajax.get('/blog/getMyAllArticles').then(res=>{
+      this.data1 = res.data
+    })
+  },
+  methods:{
+    handleView(row){
+    
+    },
+    handleEdit(row){
+      sessionStorage.setItem('cache',JSON.stringify(row))
+      this.$router.push({'path':'/admin/publish/'+row.id})
+    }
   }
 };
 </script>

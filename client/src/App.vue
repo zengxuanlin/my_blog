@@ -33,4 +33,12 @@ export default {
 .fade-enter-active, .fade-leave-active {
       transition: all .2s
 }
+pre{
+  padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f6f8fa;
+    border-radius: 3px
+}
 </style>

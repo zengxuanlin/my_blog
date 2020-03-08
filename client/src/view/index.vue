@@ -18,7 +18,7 @@
           </div>
           <div class="layout-nav"  v-else>
             <MenuItem name="1">
-              <router-link to="/admin">
+              <router-link to="/admin/articles-list">
                 进入后台
               </router-link>
             </MenuItem>

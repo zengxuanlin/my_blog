@@ -29,18 +29,29 @@ export default {
       mode:'self',
       submit:{
         title:'',
-        content:''
-      }
+        content:'',
+        mdText:''
+      },
+      edit:false
     };
+  },
+  created(){
+    if(this.$route.params.id){
+
+      this.edit = true
+    }
   },
   methods: {
     // 所有操作都会被解析重新渲染
     change(value, render) {
       // render 为 markdown 解析后的结果[html]
+      this.submit.mdText = value
       this.submit.content = render;
     },
     // 提交
     handleSubmit() {
+      console.log(this.submit.mdText)
+      return false
       // console.log(this.content);
       // console.log(this.htmlContent);
       this.$ajax.post(`/blog/publishArticle`,this.submit).then(res=>{
@@ -49,7 +60,8 @@ export default {
         }
       })
     }
-  }
+  },
+
 };
 </script>
 

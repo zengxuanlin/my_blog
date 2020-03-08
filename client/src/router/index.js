@@ -10,7 +10,7 @@ const routes = [
     component: () => import('../view/admin'), 
     children: [
       {
-        path: 'publish', 
+        path: 'publish/:id', 
         name:'publish',
         component: () => import('../view/publish'),
       },

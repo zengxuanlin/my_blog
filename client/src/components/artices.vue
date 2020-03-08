@@ -5,6 +5,7 @@
             <Icon type="ios-pricetags-outline" />
             {{item.title}}
         </p>
+        <p slot="extra">发表时间:{{item.createTime}}</p>
         <a href="#" slot="extra" @click.prevent="changeLimit">
             <Icon type="ios-loop-strong"></Icon>
             
@@ -56,5 +57,4 @@ li {
 a {
   color: #42b983;
 }
-
 </style>
