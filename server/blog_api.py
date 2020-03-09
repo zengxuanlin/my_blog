@@ -101,7 +101,7 @@ def getDetail(id):
 
 # 编辑
 @blog.route('/edit/<id>', methods=['POST'])
-def edit(id):
+def save(id):
     token = request.headers['token']
     post_data = post_json()
     try:
@@ -112,5 +112,6 @@ def edit(id):
         art = Article.query.filter_by(id=id).first()
         art.title = post_data['title']
         art.content = post_data['content']
+        art.mdText = post_data['mdText']
         db.session.commit()
         return responseData('修改成功', None,)

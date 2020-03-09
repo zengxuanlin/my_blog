@@ -54,9 +54,12 @@ export default {
   },
   methods:{
     handleView(row){
-    
+      console.log(row)
+      this.content = row.content
+      this.showDetail = true
     },
     handleEdit(row){
+      sessionStorage.removeItem('cache')
       sessionStorage.setItem('cache',JSON.stringify(row))
       this.$router.push({'path':'/admin/publish/'+row.id})
     }
