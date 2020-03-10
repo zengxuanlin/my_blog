@@ -56,7 +56,7 @@ def all():
     _dict = {'list': []}
     for item in all:
         data = {"title": item.title, "content": item.content,
-                'createTime': item.time, 'nickName': item.articles.nickName, 'commonts': []}
+                'createTime': item.time, 'nickName': item.articles.nickName, 'commonts': [],'id':item.id}
         _dict['list'].append(data)
         for c in item.art:
             data['commonts'].append(

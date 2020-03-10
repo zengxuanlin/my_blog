@@ -1,44 +1,53 @@
 <template>
   <div>
-     <Card style="width:100%;text-align:left;margin-bottom:40px" v-for="(item,index) in arts.list" :key="index">
-        <p slot="title">
-            <Icon type="ios-pricetags-outline" />
-            {{item.title}}
-        </p>
-        <p slot="extra">发表时间:{{item.createTime}}</p>
-        <a href="#" slot="extra" @click.prevent="changeLimit">
-            <Icon type="ios-loop-strong"></Icon>
-            
-        </a>
-        <ul>
-            <div v-html="item.content">
+    <Card
+      style="width:100%;text-align:left;margin-bottom:40px;"
+      v-for="(item,index) in arts.list"
+      :key="index"
+    >
+      <p slot="title">
+        <Icon type="ios-pricetags-outline" />
+        {{item.title}}
+      </p>
+      <p slot="extra">发表时间:{{item.createTime}}</p>
+      <a href="#" slot="extra" @click.prevent="changeLimit">
+        <Icon type="ios-loop-strong"></Icon>
+      </a>
+      <ul class="art-container" @click="toDetail(item,index)" ref="art">
+        <div class="mask" :style="{display:'block'}"></div>
+          <div v-html="item.content" class="art-content"></div>
 
-            </div>
-        </ul>
-         <Input v-model="value" maxlength="100" show-word-limit type="textarea" placeholder="Enter something..." style="width: 400px" />
+      </ul>
+      <!-- <Input v-model="value" maxlength="100" show-word-limit type="textarea" placeholder="Enter something..." style="width: 400px;margin-top:10px" /> -->
     </Card>
   </div>
 </template>
 
 <script>
 import "mavon-editor/dist/css/index.css";
+import { gmtToDate } from "../utils";
 export default {
-  name: 'artices',
-  data(){
+  name: "artices",
+  data() {
     return {
-      value:'',
-      arts:{
-
-      },
-    }
+      value: "",
+      arts: {}
+    };
   },
-  created(){
-    this.$ajax.get(`/blog/allArticles`).then(res=>{
-      this.arts = res.data
-    })
-
+  created() {
+    this.$ajax.get(`/blog/allArticles`).then(res => {
+      for (let t of res.data.list) {
+        t.createTime = gmtToDate(t.createTime);
+      }
+      this.arts = res.data;
+    });
+  },
+  methods: {
+    toDetail(item, index) {
+      this.$router.push({name:'detail',query:{id:2}})
+    }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -56,5 +65,21 @@ li {
 }
 a {
   color: #42b983;
+}
+.art-content {
+  max-height: 20vh;
+  overflow: hidden;
+}
+.art-container {
+  position: relative;
+  cursor: pointer;
+}
+.mask {
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
 }
 </style>

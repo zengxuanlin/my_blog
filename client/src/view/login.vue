@@ -39,7 +39,7 @@ export default {
       this.$Message.success(res.message);
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
-        this.$router.push({path:'/admin'})
+        this.$router.push({path:'/admin/articles-list'})
       }
     }
   }

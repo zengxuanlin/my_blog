@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Vue from 'vue'
-
+import route from '../router/router'
 let vueInstance = new Vue();
 let instance = axios.create({
     baseURL :'http://118.89.125.57'
@@ -19,7 +19,14 @@ instance.interceptors.request.use(config=>{
 
 instance.interceptors.response.use(res=>{
     if(res.data.code === 200){
-        return res.data
+        if(res.data.message.includes('token')){
+            vueInstance.$Message.error(res.data.message)
+            localStorage.removeItem('token')
+            route.push({name:'login'})
+            return 
+        }else{
+            return res.data
+        }
     }else{
         vueInstance.$Message.error('服务器错误')
     }

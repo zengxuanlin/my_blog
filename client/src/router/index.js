@@ -4,13 +4,18 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 const routes = [
   { path: '/', component: () => import('../view/index') },
-  { path: '/login', component: () => import('../view/login') },
+  { path: '/login', component: () => import('../view/login'),name:'login' },
+  {
+    path: '/detail', 
+    name:'detail',
+    component: () => import('../view/detail'),
+  },
   {
     path: '/admin', 
     component: () => import('../view/admin'), 
     children: [
       {
-        path: 'publish/:id', 
+        path: 'publish/', 
         name:'publish',
         component: () => import('../view/publish'),
       },
@@ -18,7 +23,7 @@ const routes = [
         path: 'articles-list', 
         name:'articles-list',
         component: () => import('../view/art-list'),
-      }
+      },
     ]
   },
   // { path: '/login', name:'login',component: ()=>import('../views/login')},
