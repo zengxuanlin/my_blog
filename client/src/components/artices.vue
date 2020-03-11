@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-03-11 16:52:14
+ * @LastEditTime: 2020-03-11 17:36:54
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /client/src/components/artices.vue
+ -->
 <template>
   <div>
     <Card
@@ -44,7 +52,7 @@ export default {
   },
   methods: {
     toDetail(item, index) {
-      this.$router.push({name:'detail',query:{id:2}})
+      this.$router.push({name:'detail',query:{id:item.id}})
     }
   }
 };

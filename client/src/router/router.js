@@ -1,3 +1,11 @@
+/*
+ * @Author: zeng
+ * @Date: 2020-03-11 16:52:14
+ * @LastEditTime: 2020-03-11 16:56:07
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /client/src/router/router.js
+ */
 import router from './index'
 import ViewUI from 'view-design';
 import Vue from 'vue'
@@ -16,7 +24,7 @@ router.beforeEach((to,from,next) => {
     }else{
         if(to.path === LOGIN_PAGE_PATH){
             next()
-        }else if(to.path === '/'){
+        }else if(to.path === '/' || to.path === '/detail'){
             next()
         }else{
             next(LOGIN_PAGE_PATH)
