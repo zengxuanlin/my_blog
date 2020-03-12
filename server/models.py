@@ -11,20 +11,20 @@ class User(db.Model):
     __tablename__ = 'users'
     guid = str(uuid.uuid4()).replace('-', '')
     id = db.Column(db.String(64), primary_key=True, default=guid)
-    username = db.Column(db.String(16))
+    username = db.Column(db.String(16),unique=True)
     password = db.Column(db.String(255))
-    age = db.Column(db.String(3))
-    address = db.Column(db.String(64))
-    nickName = db.Column(db.String(64))
+    age = db.Column(db.String(3),default=None)
+    sex = db.Column(db.String(2),default=None)
+    address = db.Column(db.String(64),default=None)
+    nickName = db.Column(db.String(64),default=None)
+    avatar = db.Column(db.Text,default=None)
+    createTime = db.Column(db.DateTime,default=datetime.datetime.now)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     articles = db.relationship('Article', backref='articles')
-    def __init__(self, username, password, age, address, nick, role_id):
+    def __init__(self, username, password, role_id):
         self.username = username
         # 加密
         self.password = generate_password_hash(password)
-        self.age = age
-        self.address = address
-        self.nickName = nick
         self.role_id = role_id
 
     # 检查密码
@@ -88,3 +88,4 @@ class Comment(db.Model):
         t = self.__dict__
         del t['_sa_instance_state'] 
         return t
+    

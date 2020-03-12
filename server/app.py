@@ -24,18 +24,9 @@ with app.app_context():
     # r2 = Role('用户')
     # db.session.add_all([r1,r2])
     # db.session.commit()
-    # test_user = User('qwedsa123','567984','27','贵州省贵阳市','神的孩子都在跳舞',r1.id)
+    # test_user = User('qwedsa123','567984',r1.id)
     # db.session.add(test_user)
     # db.session.commit()
-
-    # c = Article(test_user.id,'今晚','很难受啊哈哈哈哈','很难受啊哈哈哈哈')
-    # db.session.add(c)
-    # db.session.commit()
-
-    # common1 = Comment(c.id,'一位没姓名的网友','支持楼主~~~',)
-    # common2 = Comment(c.id,'压缩','支持楼主~~~')
-    # db.session.add_all([common1,common2])
-    db.session.commit()
 
 
 

@@ -3,8 +3,14 @@ from utils import get_user, post_json
 from models import *
 from format import *
 import time
+import os
+from werkzeug.utils import secure_filename
 blog = Blueprint('blog', __name__)
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+def allowed_file(filename):
+    return '.' in filename and \
+    filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 # 登陆
 @blog.route('/login', methods=['POST'])
 def login():
@@ -21,9 +27,9 @@ def login():
                 return responseData('登陆成功', {'token': token})
             else:
 
-                return responseData('密码输入错误')
+                return responseData('密码输入错误', None, False)
         else:
-            return responseData('找不到该用户')
+            return responseData('找不到该用户', None, False)
 
     if request.method == 'GET':
         pass
@@ -40,7 +46,8 @@ def publish():
         except Exception as e:
             return responseData('token过期或者失效', None, False)
         else:
-            artice = Article(uId, post_data['title'], post_data['content'],post_data['mdText'])
+            artice = Article(
+                uId, post_data['title'], post_data['content'], post_data['mdText'])
             db.session.add(artice)
             db.session.commit()
             return responseData('博文发布成功')
@@ -56,7 +63,7 @@ def all():
     _dict = {'list': []}
     for item in all:
         data = {"title": item.title, "content": item.content,
-                'createTime': item.time, 'nickName': item.articles.nickName, 'commonts': [],'id':item.id}
+                'createTime': item.time, 'nickName': item.articles.nickName, 'commonts': [], 'id': item.id}
         _dict['list'].append(data)
         for c in item.art:
             data['commonts'].append(
@@ -115,3 +122,63 @@ def save(id):
         art.mdText = post_data['mdText']
         db.session.commit()
         return responseData('修改成功', None,)
+
+
+# 发布评论
+@blog.route('/publishRemark', methods=['POST'])
+def remark():
+    post_data = post_json()
+    new_comment = Comment(
+        post_data['id'], post_data['name'], post_data['content'])
+    db.session.add(new_comment)
+    db.session.commit()
+    return responseData('发表成功', None)
+
+
+# 删除
+@blog.route('/delete/<id>', methods=['GET'])
+def delete(id):
+    token = request.headers['token']
+    try:
+        uId = get_user(token).id
+    except Exception as e:
+        return responseData('token过期或者失效', None, False)
+    else:   
+        find_art = Article.query.get(id)
+        find_coments = Comment.query.filter_by(fromId=id).all()
+        db.session.delete(find_art)
+        db.session.commit()
+        for c in find_coments:
+            db.session.delete(c)
+            db.session.commit()
+        
+        return responseData('删除成功', None,)
+
+#头像上传
+@blog.route('/upload', methods=['POST'])
+def upload():
+    if request.method == 'POST':
+        f = request.files['file']
+        print(os.path.dirname(__file__))
+        # 当前目录
+        current_path = os.path.dirname(__file__)
+        file_path = os.path.join(current_path,'static\images',secure_filename(f.filename))
+        if allowed_file(f.filename):
+            try:
+                f.save(file_path)
+            except:
+                return responseData('上传文件不能含有中文',None,False)
+            
+            return responseData('上传成功',{'uploadUrl':file_path})
+
+# 留言列表
+@blog.route('/commentList/<id>', methods=['GET'])
+def comment_list(id):
+    token = request.headers['token']
+    try:
+        uId = get_user(token).id
+    except Exception as e:
+        return responseData('token过期或者失效', None, False)
+    else:   
+        
+        return responseData('删除成功', None,)
