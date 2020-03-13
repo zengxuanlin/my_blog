@@ -163,11 +163,11 @@ def upload():
         f = request.files['file']
         print(os.path.dirname(__file__))
         # 当前目录
-
+        filename  = str(round(time.time() * 1000)) +'_'+f.filename
+        file_path = os.path.join(CENTOS_UPLOAD_PATH, secure_filename(filename))
+        print(file_path)
         if allowed_file(f.filename):
             try:
-                filename  = round(time.time() * 1000) +'_'+f.filename
-                file_path = os.path.join(CENTOS_UPLOAD_PATH, secure_filename(filename))
                 f.save(file_path)
             except:
                 return responseData('上传文件不能含有中文',None,False)
