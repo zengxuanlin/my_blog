@@ -17,16 +17,15 @@ db.init_app(app)
 CORS(app,support_credentials=True)
 
 with app.app_context():
-    pass
-    # db.drop_all()
-    # db.create_all()
-    # r1 = Role('管理员')
-    # r2 = Role('用户')
-    # db.session.add_all([r1,r2])
-    # db.session.commit()
-    # test_user = User('qwedsa123','567984',r1.id)
-    # db.session.add(test_user)
-    # db.session.commit()
+    db.drop_all()
+    db.create_all()
+    r1 = Role('管理员')
+    r2 = Role('用户')
+    db.session.add_all([r1,r2])
+    db.session.commit()
+    test_user = User('qwedsa123','567984',r1.id)
+    db.session.add(test_user)
+    db.session.commit()
 
 
 

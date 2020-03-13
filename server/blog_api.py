@@ -7,6 +7,8 @@ import os
 from werkzeug.utils import secure_filename
 blog = Blueprint('blog', __name__)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+CENTOS_UPLOAD_PATH = '/usr/local/src/images'
+
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -143,7 +145,7 @@ def delete(id):
         uId = get_user(token).id
     except Exception as e:
         return responseData('token过期或者失效', None, False)
-    else:   
+    else:
         find_art = Article.query.get(id)
         find_coments = Comment.query.filter_by(fromId=id).all()
         db.session.delete(find_art)
@@ -151,20 +153,21 @@ def delete(id):
         for c in find_coments:
             db.session.delete(c)
             db.session.commit()
-        
+
         return responseData('删除成功', None,)
 
-#头像上传
+# 头像上传
 @blog.route('/upload', methods=['POST'])
 def upload():
     if request.method == 'POST':
         f = request.files['file']
         print(os.path.dirname(__file__))
         # 当前目录
-        current_path = os.path.dirname(__file__)
-        file_path = os.path.join(current_path,'static\images',secure_filename(f.filename))
+
         if allowed_file(f.filename):
             try:
+                filename  = round(time.time() * 1000) +'_'+f.filename
+                file_path = os.path.join(CENTOS_UPLOAD_PATH, secure_filename(filename))
                 f.save(file_path)
             except:
                 return responseData('上传文件不能含有中文',None,False)
