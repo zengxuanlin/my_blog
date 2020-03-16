@@ -7,6 +7,9 @@ import os
 from werkzeug.utils import secure_filename
 blog = Blueprint('blog', __name__)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+'''
+文件上传的路径  先创建好文件夹
+'''
 CENTOS_UPLOAD_PATH = '/usr/local/src/images'
 
 
@@ -170,18 +173,39 @@ def upload():
             try:
                 f.save(file_path)
             except:
-                return responseData('上传文件不能含有中文',None,False)
+                return responseData('上传出错，请重试',None,False)
             
             return responseData('上传成功',{'uploadUrl':file_path})
 
 # 留言列表
-@blog.route('/commentList/<id>', methods=['GET'])
-def comment_list(id):
+@blog.route('/commentList', methods=['GET'])
+def comment_list():
+    try:
+        token = request.headers['token']
+        uId = get_user(token).id
+    except Exception as e:
+        return responseData('token过期或者失效', str(e), False)
+    arts = Article.query.filter_by(author_id=uId).all()
+    data = []
+    for art in arts:
+        for comment in art.art:
+            data.append({'remarkName':comment.name,'fromArtId':art.id,'fromArtTitle':art.title,'remarkContent':comment.content,'remarkId':comment.id})
+            pass
+
+    return responseData('success', data)
+
+
+# 删除留言
+@blog.route('/delRemark/<id>', methods=['GET'])
+def delRemark(id):
     token = request.headers['token']
     try:
         uId = get_user(token).id
     except Exception as e:
         return responseData('token过期或者失效', None, False)
-    else:   
-        
+    else:
+        find_art = Comment.query.get(id)
+        db.session.delete(find_art)
+        db.session.commit()
+
         return responseData('删除成功', None,)

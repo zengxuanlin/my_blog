@@ -66,7 +66,7 @@ class Article(db.Model):
         self.mdText = mdText
     def to_dict(self):
         t = self.__dict__
-        del t['_sa_instance_state'] 
+        # del t['_sa_instance_state'] 
         return t
 # 评论
 
