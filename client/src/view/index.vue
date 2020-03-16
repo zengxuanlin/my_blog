@@ -4,7 +4,7 @@
       <Header>
         <Menu mode="horizontal" theme="dark" active-name="1">
           <div style="color:#fff;font-size: 26px;float:left">
-            你曾是少年
+            My blog
           </div>
           <div class="layout-nav"  v-if="!hasLogin">
             <MenuItem name="1">

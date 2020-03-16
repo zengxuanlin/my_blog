@@ -27,7 +27,6 @@
       <Layout :style="{padding: '0 50px',height:'100vh'}">
         <Content :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
           <Layout>
-            <!-- <Sider hide-trigger :style="{background: '#fff'}">神的孩子都在跳舞哦</Sider> -->
             <Content
               :style="{padding: '24px', minHeight: '280px', background: '#fff',textAalign:'left'}"
             >
@@ -37,15 +36,51 @@
               </div>
               <div class="content" v-html="text.artContent"></div>
             </Content>
+
+            <Card style="margin-top:20px;text-align:left">
+              <p slot="title" style="text-align:left">留言板</p>
+              <List>
+                <ListItem v-for="(item,index) in comment" :key="index">
+                  <ListItemMeta
+                    avatar="https://dev-file.iviewui.com/userinfoPDvn9gKWYihR24SpgC319vXY8qniCqj4/avatar"
+                    :title="item.name"
+                    :description="item.content"
+                  />
+                   <template slot="action">
+                <li>
+  
+                    <Icon type="md-time" /> {{item.time}}
+                </li>
+            </template>
+                </ListItem>
+              </List>
+            </Card>
+
+            <Card style="margin-top:20px">
+              <p slot="title" style="text-align:left">发表留言</p>
+              <div class="flex">
+                <Input v-model="submit.name" style="width:30%;margin-bottom:20px">
+                  <span slot="prepend">您的昵称：</span>
+                </Input>
+                <Input
+                  v-model="submit.content"
+                  style="width:50%;margin-bottom:20px"
+                  type="textarea"
+                  placeholder="说点什么吧 老铁"
+                ></Input>
+                <Button style="width:10%" type="primary" @click="handleComment">确定</Button>
+              </div>
+            </Card>
           </Layout>
         </Content>
       </Layout>
-      <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
+      <Footer class="layout-footer-center">2011-2016 &copy; my blog</Footer>
     </Layout>
   </div>
 </template>
 <script>
 import status from "../mixins/index";
+import { gmtToDate } from "../utils";
 export default {
   mixins: [status],
   data() {
@@ -56,19 +91,47 @@ export default {
         artTitle: "",
         author: "",
         time: ""
+      },
+      submit: {
+        name: "",
+        content: "",
+        id:''
       }
     };
   },
   created() {
     this.loadDetail(this.$route.query.id);
+    this.submit.id = this.$route.query.id
   },
   methods: {
     async loadDetail(id) {
       let data = await this.$ajax.get("/blog/articles/" + id);
-      //console.log(data.data.data);
       this.comment = data.data.data.c;
-    this.text = data.data.data.text
-      console.log(data.data.data.text);
+      this.text = data.data.data.text;
+      this.comment.forEach(item=>{
+        item.time = gmtToDate(item.time);
+      })
+    },
+    handleComment(){
+      if(!this.submit['name']){
+        this.$Message.warning('请填写姓名')
+        return
+      }
+       if(!this.submit['content']){
+        this.$Message.warning('请填写姓名')
+        return
+      }
+      this.$Modal.confirm({
+        title:'tip',
+        content:'确定发表吗',
+        onOk:async ()=>{
+          let res = await this.$ajax.post(`/blog/publishRemark`,this.submit);
+      if(res.success){
+        this.$Message.success(res.message)
+        this.loadDetail(this.submit.id);
+      }
+        }
+      })
     }
   }
 };
@@ -111,5 +174,9 @@ a {
   text-align: left;
 
   padding: 0 40px;
+}
+.flex {
+  display: flex;
+  flex-direction: column;
 }
 </style>
