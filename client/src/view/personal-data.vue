@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-17 17:47:21
- * @LastEditTime: 2020-03-17 18:01:49
+ * @LastEditTime: 2020-03-17 19:45:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/view/personal_data.vue
@@ -11,7 +11,7 @@
     <Card title="我的资料" style="width:60%;margin-bottom:30px;text-align:left">
       <div style="margin-left:10%;margin-bottom:20px">
          <Avatar icon="ios-person" size="100" src="http://118.89.125.57/images/xx.jpg" />
-      <Upload action="//jsonplaceholder.typicode.com/posts/" style="margin:10px;">
+      <Upload action="http://118.89.125.57/blog/upload" style="margin:10px;">
        <Button>点击上传</Button>
       </Upload>
       </div>
