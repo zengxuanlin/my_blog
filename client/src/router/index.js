@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-03-17 17:04:44
+ * @LastEditTime: 2020-03-17 17:49:01
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /my_blog/client/src/router/index.js
+ */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
@@ -23,6 +31,11 @@ const routes = [
         path: 'articles-list', 
         name:'articles-list',
         component: () => import('../view/art-list'),
+      },
+      {
+        path: 'personal-data', 
+        name:'personal-data',
+        component: () => import('../view/personal-data'),
       },
     ]
   },

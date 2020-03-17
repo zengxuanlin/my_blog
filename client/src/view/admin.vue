@@ -69,9 +69,9 @@ export default {
                     
                 },
                 {
-                    path:'',
+                    path:'personal-data',
                     title:'个人资料',
-                    
+                    name:'personal-data'
                 }
             ]
         }
