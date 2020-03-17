@@ -176,7 +176,7 @@ def upload():
             except:
                 return responseData('上传出错，请重试',None,False)
             
-            return responseData('上传成功',{'uploadUrl':file_path})
+            return responseData('上传成功',{'uploadUrl':filename})
 
 # 留言列表
 @blog.route('/commentList', methods=['GET'])
