@@ -19,16 +19,18 @@ class User(db.Model):
     __tablename__ = 'users'
     guid = str(uuid.uuid4()).replace('-', '')
     id = db.Column(db.String(64), primary_key=True, default=guid)
-    username = db.Column(db.String(16),unique=True)
+    username = db.Column(db.String(16), unique=True)
     password = db.Column(db.String(255))
-    age = db.Column(db.String(3),default=None)
-    sex = db.Column(db.String(2),default=None)
-    address = db.Column(db.String(64),default=None)
-    nickName = db.Column(db.String(64),default=None)
-    avatar = db.Column(db.Text,default=None)
-    createTime = db.Column(db.DateTime,default=datetime.datetime.now)
+    age = db.Column(db.String(3), default=None)
+    sex = db.Column(db.String(2), default=None)
+    address = db.Column(db.String(64), default=None)
+    nickName = db.Column(db.String(64), default=None)
+    avatar = db.Column(db.Text, default=None)
+    sign = db.Column(db.Text, default=None)
+    createTime = db.Column(db.DateTime, default=datetime.datetime.now)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     articles = db.relationship('Article', backref='articles')
+
     def __init__(self, username, password, role_id):
         self.username = username
         # 加密
@@ -47,10 +49,12 @@ class User(db.Model):
 
     def to_dict(self):
         t = self.__dict__
-        del t['_sa_instance_state'] 
+        del t['_sa_instance_state']
+        del t['password']
+        del t['username']
         return t
-
 # 角色表
+
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -69,16 +73,19 @@ class Article(db.Model):
     author_id = db.Column(db.String(64), db.ForeignKey('users.id'))
     title = db.Column(db.String(64))
     content = db.Column(db.Text)
-    time = db.Column(db.DateTime,default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    time = db.Column(db.DateTime, default=datetime.datetime.now,
+                     onupdate=datetime.datetime.now)
     mdText = db.Column(db.Text)
-    def __init__(self, author_id, title, content,mdText):
+
+    def __init__(self, author_id, title, content, mdText):
         self.author_id = author_id
         self.title = title
         self.content = content
         self.mdText = mdText
+
     def to_dict(self):
         t = self.__dict__
-        # del t['_sa_instance_state'] 
+        # del t['_sa_instance_state']
         return t
 # 评论
 
@@ -89,15 +96,16 @@ class Comment(db.Model):
     fromId = db.Column(db.Integer, db.ForeignKey('article.id'))
     name = db.Column(db.String(64))
     content = db.Column(db.String(64))
-    time = db.Column(db.DateTime,default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    time = db.Column(db.DateTime, default=datetime.datetime.now,
+                     onupdate=datetime.datetime.now)
     comments = db.relationship('Article', backref='art')
 
     def __init__(self, fromId, name, content):
         self.fromId = fromId
         self.name = name
         self.content = content
+
     def to_dict(self):
         t = self.__dict__
-        del t['_sa_instance_state'] 
+        del t['_sa_instance_state']
         return t
-    

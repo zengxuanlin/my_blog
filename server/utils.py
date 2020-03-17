@@ -14,5 +14,5 @@ def get_user(token):
 
 
 def post_json():
-    data = request.get_data()
-    return  json.loads(data.decode('utf-8'))
+    data = request.get_data(as_text=True)
+    return  json.loads(data)

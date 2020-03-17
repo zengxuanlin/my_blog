@@ -210,3 +210,40 @@ def delRemark(id):
         db.session.commit()
 
         return responseData('删除成功', None,)
+
+# 个人资料修改
+@blog.route('/editData', methods=['POST'])
+def editData():
+    token = request.headers['token']
+    post_data = post_json()
+    
+    try:
+        uId = get_user(token).id
+    except Exception as e:
+        return responseData('token过期或者失效',None,False)
+
+
+    user = User.query.get(uId)
+    user.age = post_data['age'] 
+    user.sex = post_data['sex'] 
+    user.address = post_data['address'] 
+    user.nickName = post_data['nickName'] 
+    user.avatar = post_data['avatar']  
+    user.sign = post_data['sign'] 
+    db.session.commit()
+
+    return responseData('success', None,)
+
+# 个人资料
+@blog.route('/myInfo', methods=['POST'])
+def myInfo():
+    token = request.headers['token']
+    try:
+        uId = get_user(token).id
+    except Exception as e:
+        return responseData('token过期或者失效',None,False)
+
+
+    user = User.query.get(uId)
+    data = {'info':user.to_dict()}
+    return responseData('success',data=data)
