@@ -1,3 +1,11 @@
+'''
+@Author: your name
+@Date: 2020-03-17 17:04:44
+@LastEditTime: 2020-03-17 17:34:51
+@LastEditors: Please set LastEditors
+@Description: In User Settings Edit
+@FilePath: /my_blog/server/models.py
+'''
 from ext import db
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -37,6 +45,10 @@ class User(db.Model):
         s = Serializer(key, expires_in=expiration)
         return s.dumps({'id': self.id}).decode("ascii")
 
+    def to_dict(self):
+        t = self.__dict__
+        del t['_sa_instance_state'] 
+        return t
 
 # 角色表
 

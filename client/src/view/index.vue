@@ -1,9 +1,17 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-03-17 17:04:44
+ * @LastEditTime: 2020-03-17 17:32:36
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /my_blog/client/src/view/index.vue
+ -->
 <template>
   <div class="layout">
     <Layout>
       <zHeader></zHeader>
       <Layout :style="{padding: '0 50px'}">
-        <Content :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
+        <Content :style="{padding: '24px 0', minHeight: '280px'}">
           <Layout :gutter="30">
             <Row style="background:#fff">
               <Col :span="6">
@@ -20,7 +28,7 @@
           </Layout>
         </Content>
       </Layout>
-      <Footer class="layout-footer-center" style="background:#fff;position:absolute;bottom:0;width:100%">2011-2016 &copy; TalkingData</Footer>
+      <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
     </Layout>
   </div>
 </template>
@@ -45,8 +53,7 @@ export default {
   background: #f5f7f9;
   position: relative;
   border-radius: 4px;
-  overflow: hidden;
-  height:100%
+  height:100vh
 }
 .layout-logo {
   width: 100px;

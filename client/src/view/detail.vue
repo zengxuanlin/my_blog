@@ -24,9 +24,9 @@
           </div>
         </Menu>
       </Header>
-      <Layout :style="{padding: '0 50px',height:'100vh'}">
-        <Content :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
-          <Layout>
+      <Layout :style="{padding: '0 50px'}">
+        <Content :style="{padding: '24px 0', minHeight: '280px', }">
+          
             <Content
               :style="{padding: '24px', minHeight: '280px', background: '#fff',textAalign:'left'}"
             >
@@ -71,7 +71,7 @@
                 <Button style="width:10%" type="primary" @click="handleComment">确定</Button>
               </div>
             </Card>
-          </Layout>
+        
         </Content>
       </Layout>
       <Footer class="layout-footer-center">2011-2016 &copy; my blog</Footer>
@@ -139,10 +139,9 @@ export default {
 <style scoped>
 .layout {
   border: 1px solid #d7dde4;
-  background: #515a6e;
   position: relative;
   border-radius: 4px;
-  overflow: hidden;
+    background: #f5f7f9;
 }
 .layout-logo {
   width: 100px;
