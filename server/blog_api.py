@@ -215,8 +215,9 @@ def delRemark(id):
 @blog.route('/editData', methods=['POST'])
 def editData():
     token = request.headers['token']
-    post_data = post_json()
-    print(post_data)    
+   
+   
+    post_data = post_json()    
     try:
         uId = get_user(token).id
     except Exception as e:
