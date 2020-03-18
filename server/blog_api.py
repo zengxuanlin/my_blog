@@ -216,7 +216,7 @@ def delRemark(id):
 def editData():
     token = request.headers['token']
     post_data = post_json()
-    
+    print(post_data)    
     try:
         uId = get_user(token).id
     except Exception as e:
@@ -224,6 +224,7 @@ def editData():
 
 
     user = User.query.get(uId)
+    print(user)
     user.age = post_data['age'] 
     user.sex = post_data['sex'] 
     user.address = post_data['address'] 
