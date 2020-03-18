@@ -225,7 +225,14 @@ def editData():
 
 
     user = User.query.get(uId)
-    print(user)
+    '''
+      删除之前的头像
+      
+    '''
+    if user.avatar is not None:
+        prev_path = os.path.join(CENTOS_UPLOAD_PATH,user.avatar)
+        print('删除====>:',prev_path)
+        os.remove(prev_path)
     user.age = post_data['age'] 
     user.sex = post_data['sex'] 
     user.address = post_data['address'] 
@@ -233,7 +240,6 @@ def editData():
     user.avatar = post_data['avatar']  
     user.sign = post_data['sign'] 
     db.session.commit()
-
     return responseData('success', None,)
 
 # 个人资料

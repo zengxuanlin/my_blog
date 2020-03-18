@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-17 17:47:21
- * @LastEditTime: 2020-03-18 10:58:14
+ * @LastEditTime: 2020-03-18 14:03:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/view/personal_data.vue
@@ -105,7 +105,6 @@ export default {
       this.$Message.error("error");
     },
     async save(){
-      console.log(this.info)
       let res = await this.$ajax.post('/blog/editData',this.info);
       if(res.success){
         this.$Message.success(res.message)
