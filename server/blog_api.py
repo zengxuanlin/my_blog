@@ -68,14 +68,18 @@ def all():
     _dict = {'list': []}
     for item in all:
         data = {"title": item.title, "content": item.content,
-                'createTime': item.time, 'nickName': item.articles.nickName, 'commonts': [], 'id': item.id,
-                'avatar':item.articles.avatar,'address':item.articles.address,'sex':item.articles.sex,'age':item.articles.age}
+                'createTime': item.time, 'nickName': item.articles.nickName, 'commonts': [], 'id': item.id}
         _dict['list'].append(data)
         for c in item.art:
             data['commonts'].append(
                 {'id': c.id, 'name': c.name, 'content': c.content, 'time': c.time})
 
     _dict['total'] = str(count)
+    '''
+     获取本人的资料
+    '''
+    my_info = User.query.filter_by(username='qwedsa123').first()
+    _dict['info'] = my_info.to_dict()
     return responseData('列表获取成功', _dict)
 
 # 列表
@@ -229,10 +233,12 @@ def editData():
       删除之前的头像
       
     '''
-    if user.avatar is not None:
-        prev_path = os.path.join(CENTOS_UPLOAD_PATH,user.avatar)
+    prev_path = os.path.join(CENTOS_UPLOAD_PATH,user.avatar)
+    if user.avatar is not None and os.path.exists(prev_path):
         print('删除====>:',prev_path)
         os.remove(prev_path)
+    else:
+        print('====>：没有查找到该文件')
     user.age = post_data['age'] 
     user.sex = post_data['sex'] 
     user.address = post_data['address'] 
