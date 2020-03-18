@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-17 17:47:21
- * @LastEditTime: 2020-03-17 19:45:09
+ * @LastEditTime: 2020-03-18 10:58:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/view/personal_data.vue
@@ -68,12 +68,12 @@ export default {
     return {
       imageUrl: "",
       info: {
-        address: "",
-        age: "",
-        avatar: "",
-        nickName: "",
-        sex: "",
-        sign: ""
+        address:"",
+        age:"",
+        avatar:"",
+        nickName:"",
+        sex:"",
+        sign:""
       },
       host: "http://118.89.125.57/images/",
       update: new Date()
@@ -106,7 +106,7 @@ export default {
     },
     async save(){
       console.log(this.info)
-      let res = await this.$ajax.post('/blog/editData');
+      let res = await this.$ajax.post('/blog/editData',this.info);
       if(res.success){
         this.$Message.success(res.message)
         this.loadInfo()
