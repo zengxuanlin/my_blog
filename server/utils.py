@@ -1,3 +1,11 @@
+'''
+@Author: your name
+@Date: 2020-03-18 08:49:14
+@LastEditTime: 2020-03-18 08:59:17
+@LastEditors: Please set LastEditors
+@Description: In User Settings Edit
+@FilePath: /my_blog/server/utils.py
+'''
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from models import User
 from flask import request
@@ -14,5 +22,5 @@ def get_user(token):
 
 
 def post_json():
-    data = request.get_data(as_text=True)
-    return  json.loads(data)
+    data = request.get_data()
+    return  json.loads(data.decode('utf-8'))
