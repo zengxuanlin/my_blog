@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-11 16:52:14
- * @LastEditTime: 2020-03-11 17:36:54
+ * @LastEditTime: 2020-03-18 15:59:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /client/src/components/artices.vue
  -->
 <template>
-  <div>
+  <div v-if="arts.list.length">
     <Card
       style="width:100%;text-align:left;margin-bottom:40px;"
       v-for="(item,index) in arts.list"
@@ -17,7 +17,7 @@
         <Icon type="ios-pricetags-outline" />
         {{item.title}}
       </p>
-      <p slot="extra">发表时间:{{item.createTime}}</p>
+      <p slot="extra">发表时间:{{item.createTime | formatDate}}</p>
       <a href="#" slot="extra" @click.prevent="changeLimit">
         <Icon type="ios-loop-strong"></Icon>
       </a>
@@ -26,29 +26,27 @@
           <div v-html="item.content" class="art-content"></div>
 
       </ul>
-      <!-- <Input v-model="value" maxlength="100" show-word-limit type="textarea" placeholder="Enter something..." style="width: 400px;margin-top:10px" /> -->
+      
     </Card>
+  </div>
+  <div v-else >
+    <p style="margin-top:50px;">暂时还没文章哦</p>
   </div>
 </template>
 
 <script>
 import "mavon-editor/dist/css/index.css";
-import { gmtToDate } from "../utils";
+import {gmtToDate} from '../utils'
 export default {
   name: "artices",
-  data() {
-    return {
-      value: "",
-      arts: {}
-    };
+  props:{
+    arts:{
+      type:Object,
+      default:{}
+    }
   },
   created() {
-    this.$ajax.get(`/blog/allArticles`).then(res => {
-      for (let t of res.data.list) {
-        t.createTime = gmtToDate(t.createTime);
-      }
-      this.arts = res.data;
-    });
+    
   },
   methods: {
     toDetail(item, index) {

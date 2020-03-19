@@ -1,29 +1,7 @@
 <template>
   <div class="layout">
     <Layout>
-      <Header>
-        <Menu mode="horizontal" theme="dark" active-name="1">
-          <div style="color:#fff;font-size: 26px;float:left">你曾是少年</div>
-          <div class="layout-nav" v-if="!hasLogin">
-            <MenuItem name="1">
-              <router-link to="/login">
-                <Icon type="ios-analytics"></Icon>登陆
-              </router-link>
-            </MenuItem>
-            <MenuItem name="2">
-              <Icon type="ios-paper"></Icon>注册
-            </MenuItem>
-          </div>
-          <div class="layout-nav" v-else>
-            <MenuItem name="1">
-              <router-link to="/admin/articles-list">进入后台</router-link>
-            </MenuItem>
-            <MenuItem name="2">
-              <span @click="logout">退出</span>
-            </MenuItem>
-          </div>
-        </Menu>
-      </Header>
+      <z-header></z-header>
       <Layout :style="{padding: '0 50px'}">
         <Content :style="{padding: '24px 0', minHeight: '280px', }">
           
@@ -39,7 +17,7 @@
 
             <Card style="margin-top:20px;text-align:left">
               <p slot="title" style="text-align:left">留言板</p>
-              <List>
+              <List v-if="comment.length">
                 <ListItem v-for="(item,index) in comment" :key="index">
                   <ListItemMeta
                     avatar="https://dev-file.iviewui.com/userinfoPDvn9gKWYihR24SpgC319vXY8qniCqj4/avatar"
@@ -54,6 +32,9 @@
             </template>
                 </ListItem>
               </List>
+              <p v-else style="margin:10px 0">
+                暂无留言...
+              </p>
             </Card>
 
             <Card style="margin-top:20px">
@@ -81,7 +62,9 @@
 <script>
 import status from "../mixins/index";
 import { gmtToDate } from "../utils";
+import zHeader from '../components/header'
 export default {
+  components:{zHeader},
   mixins: [status],
   data() {
     return {

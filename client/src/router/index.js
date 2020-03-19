@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-03-17 17:04:44
- * @LastEditTime: 2020-03-17 17:49:01
- * @LastEditors: your name
+ * @LastEditTime: 2020-03-18 16:08:35
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/router/index.js
  */
@@ -36,6 +36,11 @@ const routes = [
         path: 'personal-data', 
         name:'personal-data',
         component: () => import('../view/personal-data'),
+      },
+      {
+        path: 'comment-list', 
+        name:'comment-list',
+        component: () => import('../view/comment-list'),
       },
     ]
   },

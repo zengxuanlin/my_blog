@@ -4,7 +4,7 @@
       <Table border :columns="columns1" :data="data1.list">
       <template slot="action" slot-scope="{ row, index }">
         <Button type="primary" @click="handleEdit(row)">编辑</Button>
-        <Button type="error" style="margin-left:10px">删除</Button>
+        <Button type="error" style="margin-left:10px" @click="delArticle(row)">删除</Button>
       </template>
       <template slot="detail" slot-scope="{ row, index }">
         <Button type="primary" @click="handleView(row)">查看</Button>
@@ -119,6 +119,20 @@ export default {
           })
         }
       });
+    },
+    delArticle(row){
+      this.$Moadl.confirm({
+        title:'提示',
+        content:'确定删除吗?',
+        onOk:async ()=>{
+          let res = await this.$ajax.get(`/blog/delete/${row.id}`);
+          if(res.success){
+            this.$Message.success(res.message)
+            return
+          }
+          this.$Message.error('删除失败')
+        }
+      })
     }
   }
 };

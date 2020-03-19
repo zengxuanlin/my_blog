@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-11 16:52:14
- * @LastEditTime: 2020-03-11 17:16:04
+ * @LastEditTime: 2020-03-18 15:32:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /client/src/view/login.vue
@@ -33,7 +33,9 @@
 </template>
 
 <script>
+import mixins from '../mixins/index'
 export default {
+  mixins:[mixins],
   data() {
     return {
       submit: {

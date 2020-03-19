@@ -1,7 +1,7 @@
 '''
 @Author: your name
 @Date: 2020-03-17 17:04:44
-@LastEditTime: 2020-03-18 14:32:17
+@LastEditTime: 2020-03-19 09:09:42
 @LastEditors: Please set LastEditors
 @Description: In User Settings Edit
 @FilePath: /my_blog/server/models.py
@@ -87,7 +87,7 @@ class Article(db.Model):
 
     def to_dict(self):
         t = self.__dict__
-        # del t['_sa_instance_state']
+        del t['_sa_instance_state']
         return t
 # 评论
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-17 17:04:44
- * @LastEditTime: 2020-03-17 17:32:36
+ * @LastEditTime: 2020-03-18 15:55:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/view/index.vue
@@ -15,13 +15,13 @@
           <Layout :gutter="30">
             <Row style="background:#fff">
               <Col :span="6">
-                <z-sider></z-sider>
+                <z-sider :info="myInfo"></z-sider>
               </Col>
               <Col :span="16">
                 <Content
                   :style="{padding: '24px', minHeight: '280px', background: '#fff',textAalign:'left'}"
                 >
-                  <artices></artices>
+                  <artices :arts="all"></artices>
                 </Content>
               </Col>
             </Row>
@@ -41,10 +41,26 @@ export default {
   mixins: [status],
   components: { artices, zHeader, zSider },
   data() {
-    return {};
+    return {
+      all:{
+        list:[]
+      },
+      myInfo:{},
+      webName:"My blog"
+    };
   },
-  created() {},
-  methods: {}
+  created() {
+    this.loadInfo()
+  },
+  methods: {
+    loadInfo(){
+       this.$ajax.get(`/blog/allArticles`).then(res => {
+      this.all = res.data;
+      this.myInfo = res.data.info
+      this.webTitle = res.data.info.nickName
+    });
+    }
+  }
 };
 </script>
 <style scoped>
