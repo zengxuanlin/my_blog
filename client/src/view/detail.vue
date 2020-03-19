@@ -160,5 +160,6 @@ a {
 .flex {
   display: flex;
   flex-direction: column;
+  align-items: flex-start
 }
 </style>

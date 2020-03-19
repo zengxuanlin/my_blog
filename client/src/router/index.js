@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-03-17 17:04:44
- * @LastEditTime: 2020-03-18 16:08:35
+ * @LastEditTime: 2020-03-19 13:42:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/router/index.js
@@ -44,8 +44,7 @@ const routes = [
       },
     ]
   },
-  // { path: '/login', name:'login',component: ()=>import('../views/login')},
-  // { path: '/create_order', component: ()=>import('../views/create_order')},
+  {path:'*',redirect:'/'}
 ]
 
 

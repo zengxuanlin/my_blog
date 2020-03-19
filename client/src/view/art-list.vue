@@ -2,6 +2,11 @@
   <div class="page">
     <Card title="文章管理">
       <Table border :columns="columns1" :data="data1.list">
+        <template slot="title" slot-scope="{ row, index }">
+          <router-link :to="'/detail?id='+row.id">
+          &lt;&lt;{{row.title}}&gt;&gt;
+          </router-link>
+      </template>
       <template slot="action" slot-scope="{ row, index }">
         <Button type="primary" @click="handleEdit(row)">编辑</Button>
         <Button type="error" style="margin-left:10px" @click="delArticle(row)">删除</Button>
@@ -50,7 +55,7 @@ export default {
       columns1: [
         {
           title: "标题",
-          key: "title"
+          slot: "title"
         },
         {
           title: "内容",
@@ -121,13 +126,14 @@ export default {
       });
     },
     delArticle(row){
-      this.$Moadl.confirm({
+      this.$Modal.confirm({
         title:'提示',
         content:'确定删除吗?',
         onOk:async ()=>{
           let res = await this.$ajax.get(`/blog/delete/${row.id}`);
           if(res.success){
             this.$Message.success(res.message)
+            this.loadList()
             return
           }
           this.$Message.error('删除失败')

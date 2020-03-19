@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-03-17 17:04:44
+ * @LastEditTime: 2020-03-19 09:43:24
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /my_blog/client/src/view/publish.vue
+ -->
 <template>
   <div>
     <div class="a-title" :key=update>
@@ -41,12 +49,6 @@ export default {
     this.update = new Date()
     if(this.$route.params.id){
       let data = JSON.parse(sessionStorage.getItem('cache'))
-      console.log(data)
-      // this.submit.title = data.title
-      // console.log(data)
-      // this.submit.content = data.content
-      // this.submit.mdText = data.mdText
-      // this.edit = true
     }else{
       this.submit={
         title:'',
@@ -70,6 +72,7 @@ export default {
       this.$ajax.post(`/blog/publishArticle`,this.submit).then(res=>{
         if(res.success){
           this.$Message.success(res.message)
+          this.$router.push({name:'articles-list'})
         }
       })
     }

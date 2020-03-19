@@ -194,7 +194,7 @@ def comment_list():
     data = []
     for art in arts:
         for comment in art.art:
-            data.append({'remarkName':comment.name,'fromArtId':art.id,'fromArtTitle':art.title,'remarkContent':comment.content,'remarkId':comment.id})
+            data.append({'remarkName':comment.name,'fromArtId':art.id,'fromArtTitle':art.title,'remarkContent':comment.content,'remarkId':comment.id,'createTime':comment.time})
             pass
 
     return responseData('success', data)

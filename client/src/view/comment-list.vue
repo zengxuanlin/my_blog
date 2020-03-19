@@ -2,15 +2,21 @@
   <div class="page">
     <Card title="我的留言">
       <Table border :columns="columns1" :data="data1.list">
-      <template slot="action" slot-scope="{ row, index }">
-        <Button type="error" style="margin-left:10px" @click="handleDel(row)">删除</Button>
-      </template>
-      <template slot="detail" slot-scope="{ row, index }">
-        <Button type="primary" @click="handleView(row)">查看</Button>
-      </template>
-    </Table>
-    <Page :total="data1.total" style="margin-top:4rem" />
+        <template slot="art" slot-scope="{ row, index }">
+          <router-link :to="'/detail?id='+row.fromArtId">&lt;&lt;{{row.fromArtTitle}}&gt;&gt;</router-link>
+        </template>
+        <template slot="action" slot-scope="{ row, index }">
+          <Button type="error" style="margin-left:10px" @click="handleDel(row)">删除</Button>
+        </template>
+        <template slot="detail" slot-scope="{ row, index }">
+          <Button type="primary" @click="handleView(row)">查看</Button>
+        </template>
+      </Table>
+      <Page :total="data1.total" style="margin-top:4rem" />
     </Card>
+    <Modal v-model="show" title="留言内容">
+      <p>{{content}}</p>
+    </Modal>
   </div>
 </template>
 
@@ -23,7 +29,7 @@ export default {
       columns1: [
         {
           title: "所属博文",
-          key: "fromArtTitle"
+          slot: "art"
         },
         {
           title: "留言内容",
@@ -35,7 +41,7 @@ export default {
         },
         {
           title: "发表时间",
-          key: "remarkName"
+          key: "createTime"
         },
         {
           title: "操作",
@@ -47,46 +53,33 @@ export default {
         total: 2
       },
       content: "",
-      detail: {
-        title: "",
-        content: "",
-        mdText: ""
-      }
+      show: false
     };
   },
   created() {
     this.loadList();
   },
   methods: {
-    change(value, render) {
-      this.detail.mdText = value;
-      this.detail.content = render;
-    },
     handleView(row) {
-      console.log(row);
-      this.content = row.content;
-      this.showDetail = true;
-    },
-    handleEdit(row) {
-      this.showEdit = true;
-      this.detail = row;
+      this.content = row.remarkContent;
+      this.show = true;
     },
     async loadList() {
-      let res = await this.$ajax.get("/blog/commentList")
-      this.data1.list =  res.data
+      let res = await this.$ajax.get("/blog/commentList");
+      this.data1.list = res.data;
     },
     handleDel(row) {
       this.$Modal.confirm({
         title: "提示",
         content: "确定删除吗",
         onOk: async () => {
-          let res = await this.$ajax.get(`/blog/delRemark/${row.remarkId}`)
-          if(res.success){
-              this.$Message.success(res.message)
-              this.loadList()
-              return
+          let res = await this.$ajax.get(`/blog/delRemark/${row.remarkId}`);
+          if (res.success) {
+            this.$Message.success(res.message);
+            this.loadList();
+            return;
           }
-          this.$message.error('error')
+          this.$message.error("error");
         }
       });
     }
