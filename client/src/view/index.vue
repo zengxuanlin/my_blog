@@ -58,6 +58,9 @@ export default {
       this.all = res.data;
       this.myInfo = res.data.info
       this.webTitle = res.data.info.nickName
+      for(let item of res.data.list){
+        item.total = item.commonts.length
+      }
     });
     }
   }

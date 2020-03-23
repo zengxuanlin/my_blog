@@ -10,9 +10,10 @@
             >
               <div class="title">
                 <h1>{{text.artTitle}}</h1>
+                <span style="color:#999">{{text.author}} 最后发布于 {{text.time | formatDate}}</span>
                 <Divider dashed />
               </div>
-              <div class="content" v-html="text.artContent"></div>
+              <div class="content markdown-body" v-html="text.artContent"></div>
             </Content>
 
             <Card style="margin-top:20px;text-align:left">

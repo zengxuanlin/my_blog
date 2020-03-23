@@ -23,34 +23,35 @@
       </a>
       <ul class="art-container" @click="toDetail(item,index)" ref="art">
         <div class="mask" :style="{display:'block'}"></div>
-          <div v-html="item.content" class="art-content"></div>
-
+        <div class="badge">
+          <Badge :count="item.total" v-if="item.total>0">
+            <Icon type="ios-notifications-outline" size="26"></Icon>
+          </Badge>
+        </div>
+        <div v-html="item.content" class="art-content markdown-body"></div>
       </ul>
-      
     </Card>
   </div>
-  <div v-else >
+  <div v-else>
     <p style="margin-top:50px;">暂时还没文章哦</p>
   </div>
 </template>
 
 <script>
 import "mavon-editor/dist/css/index.css";
-import {gmtToDate} from '../utils'
+import { gmtToDate } from "../utils";
 export default {
   name: "artices",
-  props:{
-    arts:{
-      type:Object,
-      default:{}
+  props: {
+    arts: {
+      type: Object,
+      default: {}
     }
   },
-  created() {
-    
-  },
+  created() {},
   methods: {
     toDetail(item, index) {
-      this.$router.push({name:'detail',query:{id:item.id}})
+      this.$router.push({ name: "detail", query: { id: item.id } });
     }
   }
 };
@@ -87,5 +88,9 @@ a {
   width: 100%;
   height: 100%;
   opacity: 0.3;
+}
+.badge{
+  float:right;
+  margin-right:10px
 }
 </style>
