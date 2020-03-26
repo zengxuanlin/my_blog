@@ -10,25 +10,33 @@
   <div class="layout">
     <Layout>
       <zHeader></zHeader>
-      <Layout :style="{padding: '0 50px'}">
+      <Layout :style="{padding: '0 50px'}" v-if="loaded">
         <Content :style="{padding: '24px 0', minHeight: '280px'}">
           <Layout :gutter="30">
-            <Row style="background:#fff">
+            <Row style="background:#fff;height:90vh;posi">
               <Col :span="6">
                 <z-sider :info="myInfo"></z-sider>
               </Col>
-              <Col :span="16">
+              <Col :span="16" style="height:100%;position:relative">
                 <Content
                   :style="{padding: '24px', minHeight: '280px', background: '#fff',textAalign:'left'}"
                 >
                   <artices :arts="all"></artices>
+                  <Page :total="total" class="page" show-elevator @on-change="onChangePageNum"  />
                 </Content>
               </Col>
+              
             </Row>
+            
           </Layout>
         </Content>
       </Layout>
-      <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
+
+      <div v-else class="error">
+        <Icon type="ios-alert" size="80" color="#ff9900" />
+        <span style="margin-left:20px">出错啦 没有该作者的内容...</span>
+      </div>
+      <Footer class="layout-footer-center">2011-2020 &copy; My Blog</Footer>
     </Layout>
   </div>
 </template>
@@ -42,24 +50,37 @@ export default {
   components: { artices, zHeader, zSider },
   data() {
     return {
-      all:{
-        list:[]
+      all: {
+        list: [],
       },
-      myInfo:{},
+      total:0,
+      myInfo: {},
+      loaded: false,
+      homeId: this.$route.params.home_id
     };
   },
   created() {
-    this.loadInfo()
+    if (this.homeId) this.loadInfo();
   },
   methods: {
-    loadInfo(){
-       this.$ajax.get(`/blog/allArticles`).then(res => {
-      this.all = res.data;
-      this.myInfo = res.data.info
-      for(let item of res.data.list){
-        item.total = item.commonts.length
-      }
-    });
+    loadInfo() {
+      this.$ajax
+        .post(`/blog/myArticles/${this.homeId}`, this.query)
+        .then(res => {
+          if (res.success) {
+            this.loaded = true;
+            this.all = res.data;
+            this.myInfo = res.data.info;
+            for (let item of res.data.list) {
+              item.total = item.commonts.length;
+            }
+            this.total = parseInt(res.data.total)
+          }
+        });
+    },
+    onChangePageNum(num){
+      this.query.pageNum = num;
+      this.loadInfo()
     }
   }
 };
@@ -70,7 +91,7 @@ export default {
   background: #f5f7f9;
   position: relative;
   border-radius: 4px;
-  height:100vh
+  height: 100vh;
 }
 .layout-logo {
   width: 100px;
@@ -84,5 +105,16 @@ export default {
 }
 .layout-footer-center {
   text-align: center;
+}
+.error {
+  width: 80%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page{
+  position: absolute;
+  bottom: 5%;
 }
 </style>

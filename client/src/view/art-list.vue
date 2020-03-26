@@ -15,7 +15,7 @@
         <Button type="primary" @click="handleView(row)">查看</Button>
       </template>
     </Table>
-    <Page :total="data1.total" style="margin-top:4rem" />
+    <Page :total="data1.total" style="margin-top:4rem" show-total @on-change="onChangePageNum"/>
     </Card>
     <!-- <Drawer title="详情" :closable="false" v-model="showDetail" width="70">
       <div v-html="content"></div>
@@ -47,7 +47,9 @@
 
 <script>
 import {gmtToDate} from '../utils'
+import mixins from '../mixins/index'
 export default {
+  mixins:[mixins],
   data() {
     return {
       showDetail: false,
@@ -100,12 +102,16 @@ export default {
       this.detail = row;
     },
     loadList() {
-      this.$ajax.get("/blog/getMyAllArticles").then(res => {
+      this.$ajax.post("/blog/getMyAllArticles",this.query).then(res => {
         this.data1 = res.data;
         for(let t of res.data.list){
           t.time = gmtToDate(t.time)
         }
       });
+    },
+    onChangePageNum(num){
+      this.query.pageNum = num
+      this.loadList()
     },
     handleSubmit() {
       this.$Modal.confirm({

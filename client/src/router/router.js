@@ -24,11 +24,14 @@ router.beforeEach((to,from,next) => {
         }
     }else{
         if(to.path === LOGIN_PAGE_PATH || to.path === REGISTER_PATH_PATH){
+            
             next()
-        }else if(to.path === '/' || to.path === '/detail'){
+        }else if(to.name === 'home' || to.name === 'detail'){      
             next()
-        }else{
+        }else if(to.path.includes('admin')){
             next(LOGIN_PAGE_PATH)
+        }else{
+            next()
         }
     }
 })

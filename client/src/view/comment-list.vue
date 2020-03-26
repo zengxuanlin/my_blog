@@ -11,8 +11,11 @@
         <template slot="detail" slot-scope="{ row, index }">
           <Button type="primary" @click="handleView(row)">查看</Button>
         </template>
+        <template slot="remarkTime" slot-scope="{ row, index }" >
+          {{row.remarkTime | gmtToDate}}
+        </template>
       </Table>
-      <Page :total="data1.total" style="margin-top:4rem" />
+      <Page :total="data1.total" style="margin-top:4rem" show-total @on-change="onChangePageNum" />
     </Card>
     <Modal v-model="show" title="留言内容">
       <p>{{content}}</p>
@@ -21,7 +24,9 @@
 </template>
 
 <script>
+import mixins from '../mixins/index'
 export default {
+  mixins:[mixins],
   data() {
     return {
       showDetail: false,
@@ -41,7 +46,7 @@ export default {
         },
         {
           title: "发表时间",
-          key: "createTime"
+          slot: "remarkTime"
         },
         {
           title: "操作",
@@ -65,8 +70,8 @@ export default {
       this.show = true;
     },
     async loadList() {
-      let res = await this.$ajax.get("/blog/commentList");
-      this.data1.list = res.data;
+      let res = await this.$ajax.post("/blog/commentList",this.query);
+      this.data1 = res.data;
     },
     handleDel(row) {
       this.$Modal.confirm({
@@ -82,7 +87,11 @@ export default {
           this.$message.error("error");
         }
       });
-    }
+    },
+    onChangePageNum(num){
+      this.query.pageNum = num
+      this.loadList()
+    },
   }
 };
 </script>

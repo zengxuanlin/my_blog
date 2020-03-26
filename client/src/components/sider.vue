@@ -12,9 +12,9 @@
       <div class="demo-avatar" style="text-align:center">
         <Avatar icon="ios-person" size="100" :src="'http://118.89.125.57/images/'+info.avatar" v-if="info.avatar"/>
         <Avatar icon="ios-person" size="100"  v-else/>
-        <div>{{info.nickName}}</div>
-        <div>{{info.address}}</div>
-        <div>{{info.sign}}</div>
+        <div>{{info.nickName || info.home_id}}</div>
+        <div>{{info.address || '火星'}}</div>
+        <div>{{info.sign || '这家伙太懒 什么也不说...'}}</div>
       </div>
     </Sider>
   </div>

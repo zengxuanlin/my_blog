@@ -126,10 +126,18 @@ export default {
     handleSubmit() {
       this.$refs["submit"].validate(valid => {
         if (valid) {
-          this.$Message.success("该功能暂未开放");
-        } else {
-          this.$Message.error("请填写内容后再操作");
-        }
+          this.$ajax.post('/blog/register',this.submit).then(res=>{
+            if(res.success){
+              this.$Message.success(res.message,'请登录')
+              this.$router.push('/login')
+              return
+            }
+            this.$Message.warning(res.message)
+            this.createCode()
+            this.submit.code = '';
+            this.submit.username = '';
+          })
+        } 
       });
       //   if (!this.submit.password) {
       //   }

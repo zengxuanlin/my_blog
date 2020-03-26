@@ -10,9 +10,7 @@
   <Header>
     <Menu mode="horizontal" theme="dark" active-name="1">
       <div style="color:#fff;font-size: 26px;float:left">
-        <router-link to='/'>
-          {{webTitle}}
-        </router-link>
+        <router-link to="/">{{webTitle}}</router-link>
       </div>
       <div class="layout-nav" v-if="!hasLogin">
         <MenuItem name="1">
@@ -21,7 +19,7 @@
           </router-link>
         </MenuItem>
         <MenuItem name="2">
-        <router-link to="/register">
+          <router-link to="/register">
             <Icon type="ios-paper"></Icon>注册
           </router-link>
         </MenuItem>
@@ -29,7 +27,7 @@
       <div class="layout-nav" v-if="hasLogin">
         <MenuItem name="1">
           <router-link to="/admin/articles-list" v-if="!isHomePage">进入后台</router-link>
-          <router-link to="/" v-else >个人主页</router-link>
+          <a href="#" @click="toHome" v-else>个人主页</a>
         </MenuItem>
         <MenuItem name="2">
           <span @click="logout">退出</span>
@@ -44,24 +42,29 @@ import status from "../mixins/index";
 export default {
   name: "zHeader",
   mixins: [status],
-  data(){
+  data() {
     return {
-      isHomePage:false,
+      isHomePage: false
+    };
+  },
+  created() {
+    if (this.$route.path.includes("admin") && this.hasLogin) {
+      this.isHomePage = true;
+    } else {
+      this.isHomePage = false;
     }
   },
-  created(){
-    if(this.$route.path.includes('admin') && this.hasLogin){
-      this.isHomePage = true
-    }else{
-      this.isHomePage = false
+  methods:{
+    toHome(){
+      this.$router.push(`/home/${localStorage.getItem('home_id')}`)
     }
-  },
+  }
 };
 </script>
 
 <style scoped>
-a{
-  color:#fff
+a {
+  color: #fff;
 }
 .layout-nav {
   width: 420px;

@@ -105,6 +105,7 @@ export default {
       this.$Message.error("error");
     },
     async save(){
+      delete this.info['home_id']
       let res = await this.$ajax.post('/blog/editData',this.info);
       if(res.success){
         this.$Message.success(res.message)

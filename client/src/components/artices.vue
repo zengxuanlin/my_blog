@@ -33,7 +33,7 @@
     </Card>
   </div>
   <div v-else>
-    <p style="margin-top:50px;">暂时还没文章哦</p>
+    <p style="margin-top:50px;">该用户暂时还没有发表文章哦</p>
   </div>
 </template>
 

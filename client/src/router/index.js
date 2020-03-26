@@ -11,7 +11,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 const routes = [
-  { path: '/', component: () => import('../view/index'),name:'home' },
+  { path: '/home/:home_id', component: () => import('../view/index'),name:'home' },
   { path: '/login', component: () => import('../view/login'),name:'login' },
   { path: '/register', component: () => import('../view/register'),name:'register' },
   {
@@ -19,6 +19,7 @@ const routes = [
     name:'detail',
     component: () => import('../view/detail'),
   },
+  { path: '/404', component: () => import('../view/404'),name:'404' },
   {
     path: '/admin', 
     component: () => import('../view/admin'), 
@@ -45,7 +46,7 @@ const routes = [
       },
     ]
   },
-  {path:'*',redirect:'/'}
+  {path:'*',redirect:'/404'}
 ]
 
 

@@ -62,6 +62,7 @@ export default {
       this.$Message.success(res.message);
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("home_id", res.data.home_id);
         this.$router.push({ path: "/admin/articles-list" });
       }
     },
