@@ -281,7 +281,7 @@ def editData():
     user.avatar = post_data['avatar']
     user.sign = post_data['sign']
     db.session.commit()
-    return responseData('success', None,)
+    return responseData('资料更新成功', None,)
 
 # 个人资料
 @blog.route('/myInfo', methods=['POST'])
