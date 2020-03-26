@@ -1,5 +1,5 @@
 from flask import Blueprint, request, Flask
-from utils import get_user, post_json
+from utils import get_user, post_json, get_short_id
 from models import *
 from format import *
 import time
@@ -15,7 +15,7 @@ CENTOS_UPLOAD_PATH = '/usr/local/src/images'
 
 def allowed_file(filename):
     return '.' in filename and \
-    filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 # 登陆
 @blog.route('/login', methods=['POST'])
 def login():
@@ -25,16 +25,33 @@ def login():
         user = User.query.filter_by(username=post_data['username']).first()
         if user is not None:
             hasCheck = user.check_password(post_data['password'])
-            print(hasCheck)
             if hasCheck:
                 token = user.create_token()
 
-                return responseData('登陆成功', {'token': token})
+                return responseData('登陆成功', {'token': token, 'home_id': user.home_id})
             else:
 
                 return responseData('密码输入错误', None, False)
         else:
             return responseData('找不到该用户', None, False)
+
+    if request.method == 'GET':
+        pass
+
+# 登陆
+@blog.route('/register', methods=['POST'])
+def register():
+    if request.method == 'POST':
+        post_data = post_json()
+        user = User.query.filter_by(username=post_data['username']).first()
+        if user is None:
+            new_user = User(post_data['username'],
+                            post_data['password'], '2', get_short_id())
+            db.session.add(new_user)
+            db.session.commit()
+            return responseData('创建成功', None)
+        else:
+            return responseData('该账户名已存在', None, False)
 
     if request.method == 'GET':
         pass
@@ -60,43 +77,53 @@ def publish():
     if request.method == 'GET':
         pass
 
-# 首页全部
-@blog.route('/allArticles')
-def all():
-    all = Article.query.all()
-    count = Article.query.count()
-    _dict = {'list': []}
-    for item in all:
-        data = {"title": item.title, "content": item.content,
-                'createTime': item.time, 'nickName': item.articles.nickName, 'commonts': [], 'id': item.id}
-        _dict['list'].append(data)
-        for c in item.art:
-            data['commonts'].append(
-                {'id': c.id, 'name': c.name, 'content': c.content, 'time': c.time})
+# 个人主页
+@blog.route('/myArticles/<homeId>', methods=['POST'])
+def all(homeId):
+    if request.method == 'POST':
+        post_data = post_json()
+        page_size = post_json()['pageSize']
+        page_num = post_json()['pageNum']
+        user = User.query.filter_by(home_id=homeId).first()
+        all = Article.query.filter_by(author_id=user.id).order_by(-Article.time).limit(
+            int(page_size)).offset((int(page_num)-1)*int(page_size))
+        count = Article.query.filter_by(author_id=user.id).count()
+        _dict = {'list': []}
+        for item in all:
+            data = {"title": item.title, "content": item.content,
+                    'createTime': item.time, 'nickName': item.articles.nickName, 'commonts': [], 'id': item.id}
+            _dict['list'].append(data)
+            for c in item.art:
+                data['commonts'].append(
+                    {'id': c.id, 'name': c.name, 'content': c.content, 'time': c.time})
 
-    _dict['total'] = str(count)
-    '''
-     获取本人的资料
-    '''
-    my_info = User.query.filter_by(username='qwedsa123').first()
-    _dict['info'] = my_info.to_dict()
-    return responseData('列表获取成功', _dict)
+        _dict['total'] = str(count)
+        '''
+        获取自己的资料
+        '''
+        _dict['info'] = user.to_dict()
+        return responseData('列表获取成功', _dict)
 
 # 列表
-@blog.route('/getMyAllArticles')
+@blog.route('/getMyAllArticles', methods=['POST'])
 def getMy():
-    token = request.headers['token']
-    try:
-        uId = get_user(token).id
-    except Exception as e:
-        return responseData('token过期或者失效', None, False)
-    else:
-        arts = Article.query.filter_by(author_id=uId).all()
-        total = Article.query.filter_by(author_id=uId).count()
-        data = []
-        for u in arts:
-            data.append(u.to_dict())
-        return responseData('获取成功', {'total': str(total), 'list': data})
+    if request.method == 'POST':
+        token = request.headers['token']
+        try:
+            uId = get_user(token).id
+        except Exception as e:
+            return responseData('token过期或者失效', None, False)
+        else:
+            post_data = post_json()
+            page_size = post_json()['pageSize']
+            page_num = post_json()['pageNum']
+            arts = Article.query.filter_by(author_id=uId).order_by(-Article.time).limit(
+                int(page_size)).offset((int(page_num)-1)*int(page_size))
+            total = Article.query.filter_by(author_id=uId).count()
+            data = []
+            for u in arts:
+                data.append(u.to_dict())
+            return responseData('获取成功', {'total': str(total), 'list': data})
 
 # 详情
 @blog.route('/articles/<id>')
@@ -171,33 +198,39 @@ def upload():
         f = request.files['file']
         print(os.path.dirname(__file__))
         # 当前目录
-        filename  = str(round(time.time() * 1000)) +'_'+f.filename
+        filename = str(round(time.time() * 1000)) + '_'+f.filename
         file_path = os.path.join(CENTOS_UPLOAD_PATH, secure_filename(filename))
         print(file_path)
         if allowed_file(f.filename):
             try:
                 f.save(file_path)
             except:
-                return responseData('上传出错，请重试',None,False)
-            
-            return responseData('上传成功',{'uploadUrl':filename})
+                return responseData('上传出错，请重试', None, False)
+
+            return responseData('上传成功', {'uploadUrl': filename})
 
 # 留言列表
-@blog.route('/commentList', methods=['GET'])
+@blog.route('/commentList', methods=['POST'])
 def comment_list():
-    try:
-        token = request.headers['token']
-        uId = get_user(token).id
-    except Exception as e:
-        return responseData('token过期或者失效', str(e), False)
-    arts = Article.query.filter_by(author_id=uId).all()
-    data = []
-    for art in arts:
-        for comment in art.art:
-            data.append({'remarkName':comment.name,'fromArtId':art.id,'fromArtTitle':art.title,'remarkContent':comment.content,'remarkId':comment.id,'createTime':comment.time})
-            pass
+    if request.method == 'POST':
+        try:
+            token = request.headers['token']
+            uId = get_user(token).id
+        except Exception as e:
+            return responseData('token过期或者失效', str(e), False)
+        post_data = post_json()
+        page_size = post_json()['pageSize']
+        page_num = post_json()['pageNum']
+        arts = Article.query.filter_by(author_id=uId).order_by(-Article.time).limit(
+                int(page_size)).offset((int(page_num)-1)*int(page_size))
+        data = []
+        for art in arts:
+            for comment in art.art:
+                data.append({'remarkName': comment.name, 'fromArtId': art.id, 'fromArtTitle': art.title,
+                            'remarkContent': comment.content, 'remarkId': comment.id})
+                pass
 
-    return responseData('success', data)
+        return responseData('success', {'total':'','list':data})
 
 
 # 删除留言
@@ -219,32 +252,30 @@ def delRemark(id):
 @blog.route('/editData', methods=['POST'])
 def editData():
     token = request.headers['token']
-   
-   
-    post_data = post_json()    
+
+    post_data = post_json()
     try:
         uId = get_user(token).id
     except Exception as e:
-        return responseData('token过期或者失效',None,False)
-
+        return responseData('token过期或者失效', None, False)
 
     user = User.query.get(uId)
     '''
       删除之前的头像
       
     '''
-    prev_path = os.path.join(CENTOS_UPLOAD_PATH,user.avatar)
+    prev_path = os.path.join(CENTOS_UPLOAD_PATH, user.avatar)
     if user.avatar is not None and os.path.exists(prev_path):
-        print('删除====>:',prev_path)
+        print('删除====>:', prev_path)
         os.remove(prev_path)
     else:
         print('====>：没有查找到该文件')
-    user.age = post_data['age'] 
-    user.sex = post_data['sex'] 
-    user.address = post_data['address'] 
-    user.nickName = post_data['nickName'] 
-    user.avatar = post_data['avatar']  
-    user.sign = post_data['sign'] 
+    user.age = post_data['age']
+    user.sex = post_data['sex']
+    user.address = post_data['address']
+    user.nickName = post_data['nickName']
+    user.avatar = post_data['avatar']
+    user.sign = post_data['sign']
     db.session.commit()
     return responseData('success', None,)
 
@@ -255,9 +286,8 @@ def myInfo():
     try:
         uId = get_user(token).id
     except Exception as e:
-        return responseData('token过期或者失效',None,False)
-
+        return responseData('token过期或者失效', None, False)
 
     user = User.query.get(uId)
-    data = {'info':user.to_dict()}
-    return responseData('success',data=data)
+    data = {'info': user.to_dict()}
+    return responseData('success', data=data)

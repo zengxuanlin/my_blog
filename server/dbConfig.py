@@ -5,7 +5,6 @@ import platform
 
 current_system = platform.system()
 def getUrl():
-    # 118.89.125.57
     URL = '127.0.0.1:3306'
     USERNAME = 'root'
     PASSWORD = '' if current_system == 'Linux' else '567984'  

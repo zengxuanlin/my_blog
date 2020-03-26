@@ -30,12 +30,13 @@ class User(db.Model):
     createTime = db.Column(db.DateTime, default=datetime.datetime.now)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     articles = db.relationship('Article', backref='articles')
-
-    def __init__(self, username, password, role_id):
+    home_id = db.Column(db.String(255),default=None)
+    def __init__(self, username, password, role_id,home_id):
         self.username = username
         # 加密
         self.password = generate_password_hash(password)
         self.role_id = role_id
+        self.home_id = home_id
 
     # 检查密码
     def check_password(self, pwd):
