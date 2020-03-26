@@ -29,7 +29,7 @@ export default {
       columns1: [
         {
           title: "所属博文",
-          slot: "art"
+          slot: "art",
         },
         {
           title: "留言内容",

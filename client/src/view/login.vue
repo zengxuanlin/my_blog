@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-11 16:52:14
- * @LastEditTime: 2020-03-18 15:32:43
+ * @LastEditTime: 2020-03-26 15:03:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /client/src/view/login.vue
@@ -21,11 +21,12 @@
           <div class="flex">
             <Input type="text" style="width:40%;margin-right:30px" v-model="code"/>
             <canvas id="myCanvas"></canvas>
+            <Button type='text' style="margin-left:10px" @click="createCode">换一个</Button>
           </div>
         </FormItem>
         <FormItem>
           <Button type="primary" @click="handleSubmit()">登陆</Button>
-          <Button @click="handleReset('formCustom')" style="margin-left: 8px">重置</Button>
+          <Button @click="handleReset()" style="margin-left: 8px">重置</Button>
         </FormItem>
       </Form>
     </div>
@@ -88,7 +89,9 @@ export default {
         ctx.fillText(codes[r], x, y);
       }
     },
-    
+    handleReset(){
+      this.submit = {}
+    }
   }
 };
 </script>

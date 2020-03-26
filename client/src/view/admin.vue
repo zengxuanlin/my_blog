@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-17 17:04:44
- * @LastEditTime: 2020-03-18 16:08:58
+ * @LastEditTime: 2020-03-26 15:20:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/view/admin.vue
@@ -12,7 +12,7 @@
       <z-header></z-header>
       <Layout style="height:90vh">
         <Sider hide-trigger :style="{background: '#fff'}">
-          <Menu active-name="0" theme="light" width="auto" :open-names="['1']">
+          <Menu :active-name="0" theme="light" width="auto" :open-names="['1']">
             <!-- <Submenu name="1">
               <template slot="title">
                 <Icon type="ios-navigate"></Icon>Item 1
@@ -26,6 +26,7 @@
               v-for="(item,index) in routers"
               :key="index"
               :to="{name:item.name}"
+              
             >{{item.title}}</MenuItem>
           </Menu>
         </Sider>
@@ -73,11 +74,7 @@ export default {
   created() {
   },
   methods: {
-    link(p) {
-      if (p) {
-        this.$router.push({ path: p });
-      }
-    }
+
   }
 };
 </script>

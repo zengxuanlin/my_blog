@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-17 17:04:44
- * @LastEditTime: 2020-03-18 15:55:13
+ * @LastEditTime: 2020-03-26 15:37:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/view/index.vue
@@ -46,7 +46,6 @@ export default {
         list:[]
       },
       myInfo:{},
-      webName:"My blog"
     };
   },
   created() {
@@ -57,7 +56,6 @@ export default {
        this.$ajax.get(`/blog/allArticles`).then(res => {
       this.all = res.data;
       this.myInfo = res.data.info
-      this.webTitle = res.data.info.nickName
       for(let item of res.data.list){
         item.total = item.commonts.length
       }

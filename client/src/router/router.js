@@ -1,7 +1,7 @@
 /*
  * @Author: zeng
  * @Date: 2020-03-11 16:52:14
- * @LastEditTime: 2020-03-11 16:56:07
+ * @LastEditTime: 2020-03-26 14:18:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /client/src/router/router.js
@@ -12,6 +12,7 @@ import Vue from 'vue'
 Vue.use(ViewUI);
 
 const LOGIN_PAGE_PATH = '/login'
+const REGISTER_PATH_PATH = '/register'
 router.beforeEach((to,from,next) => {
     ViewUI.LoadingBar.start();
     let token = localStorage.getItem('token')
@@ -22,7 +23,7 @@ router.beforeEach((to,from,next) => {
             next()
         }
     }else{
-        if(to.path === LOGIN_PAGE_PATH){
+        if(to.path === LOGIN_PAGE_PATH || to.path === REGISTER_PATH_PATH){
             next()
         }else if(to.path === '/' || to.path === '/detail'){
             next()

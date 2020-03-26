@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-17 17:04:44
- * @LastEditTime: 2020-03-18 15:45:55
+ * @LastEditTime: 2020-03-26 15:35:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/components/header.vue
@@ -21,13 +21,15 @@
           </router-link>
         </MenuItem>
         <MenuItem name="2">
-          <Icon type="ios-paper"></Icon>注册
+        <router-link to="/register">
+            <Icon type="ios-paper"></Icon>注册
+          </router-link>
         </MenuItem>
       </div>
       <div class="layout-nav" v-if="hasLogin">
         <MenuItem name="1">
-          <router-link to="/admin/articles-list" v-if="!isAdmin">进入后台</router-link>
-          <router-link to="/" v-else >首页</router-link>
+          <router-link to="/admin/articles-list" v-if="!isHomePage">进入后台</router-link>
+          <router-link to="/" v-else >个人主页</router-link>
         </MenuItem>
         <MenuItem name="2">
           <span @click="logout">退出</span>
@@ -42,9 +44,18 @@ import status from "../mixins/index";
 export default {
   name: "zHeader",
   mixins: [status],
+  data(){
+    return {
+      isHomePage:false,
+    }
+  },
   created(){
-    
-  }
+    if(this.$route.path.includes('admin') && this.hasLogin){
+      this.isHomePage = true
+    }else{
+      this.isHomePage = false
+    }
+  },
 };
 </script>
 

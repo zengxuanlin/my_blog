@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-03-17 17:04:44
- * @LastEditTime: 2020-03-19 13:42:27
+ * @LastEditTime: 2020-03-26 15:09:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/router/index.js
@@ -11,8 +11,9 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 const routes = [
-  { path: '/', component: () => import('../view/index') },
+  { path: '/', component: () => import('../view/index'),name:'home' },
   { path: '/login', component: () => import('../view/login'),name:'login' },
+  { path: '/register', component: () => import('../view/register'),name:'register' },
   {
     path: '/detail', 
     name:'detail',

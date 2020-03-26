@@ -17,9 +17,9 @@
     </Table>
     <Page :total="data1.total" style="margin-top:4rem" />
     </Card>
-    <Drawer title="详情" :closable="false" v-model="showDetail" width="640">
+    <!-- <Drawer title="详情" :closable="false" v-model="showDetail" width="70">
       <div v-html="content"></div>
-    </Drawer>
+    </Drawer> -->
     <Drawer title="编辑" :closable="false" v-model="showEdit" width="100" :mask-closable="false">
       <div class="a-title">
         <span>博文标题：</span>
@@ -139,6 +139,9 @@ export default {
           this.$Message.error('删除失败')
         }
       })
+    },
+    handleView(item) {
+      this.$router.push({ name: "detail", query: { id: item.id } });
     }
   }
 };

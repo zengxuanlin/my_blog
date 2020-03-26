@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-03-17 17:04:44
- * @LastEditTime: 2020-03-18 15:47:52
+ * @LastEditTime: 2020-03-26 15:37:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_blog/client/src/mixins/index.js
@@ -13,7 +13,7 @@ export default {
     data(){
         return{
             hasLogin:false,
-            webTitle:'My blog',
+            webTitle:'My Blog',
             isAdmin:false
         }
     },
@@ -22,7 +22,6 @@ export default {
     },
     methods:{
         logout(){
-            console.log(this.isAdmin)
             that.$Modal.confirm({
                 title: '提示',
                 content: '<p>确认退出了吗</p>',
