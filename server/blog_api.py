@@ -222,15 +222,16 @@ def comment_list():
         page_size = post_json()['pageSize']
         page_num = post_json()['pageNum']
         arts = Article.query.filter_by(author_id=uId).order_by(-Article.time).limit(
-                int(page_size)).offset((int(page_num)-1)*int(page_size))
+            int(page_size)).offset((int(page_num)-1)*int(page_size))
+        total = Article.query.filter_by(author_id=uId)
         data = []
         for art in arts:
             for comment in art.art:
                 data.append({'remarkName': comment.name, 'fromArtId': art.id, 'fromArtTitle': art.title,
-                            'remarkContent': comment.content, 'remarkId': comment.id})
+                             'remarkContent': comment.content, 'remarkId': comment.id, 'remarkTime': comment.time})
                 pass
 
-        return responseData('success', {'total':'','list':data})
+        return responseData('success', {'total': '', 'list': data})
 
 
 # 删除留言
@@ -264,12 +265,15 @@ def editData():
       删除之前的头像
       
     '''
-    prev_path = os.path.join(CENTOS_UPLOAD_PATH, user.avatar)
-    if user.avatar is not None and os.path.exists(prev_path):
-        print('删除====>:', prev_path)
-        os.remove(prev_path)
-    else:
-        print('====>：没有查找到该文件')
+    print('用户头像====:',user.avatar)
+    if user.avatar is not None:
+        prev_path = os.path.join(CENTOS_UPLOAD_PATH, user.avatar)
+        if os.path.exists(prev_path):
+            print('删除====>:', prev_path)
+            os.remove(prev_path)
+        else:
+            print('====>：没有查找到该文件')
+
     user.age = post_data['age']
     user.sex = post_data['sex']
     user.address = post_data['address']

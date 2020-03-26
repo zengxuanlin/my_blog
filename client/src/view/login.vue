@@ -10,8 +10,8 @@
   <div class="login">
     <div class="login-form">
       <h1 style="color:#333;margin-bottom:40px;">Myblog Admin Login</h1>
-      <Form :label-width="80">
-        <FormItem label="账号：">
+      <Form :label-width="80"  @keyup.native.enter="handleSubmit">
+        <FormItem label="账号：" >
           <Input type="text" placeholder="Username" v-model="submit.username" />
         </FormItem>
         <FormItem label="密码：">
@@ -25,8 +25,8 @@
           </div>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="handleSubmit()">登陆</Button>
-          <Button @click="handleReset()" style="margin-left: 8px">重置</Button>
+          <Button type="primary" @click="handleSubmit">登陆</Button>
+          <Button @click="handleReset" style="margin-left: 8px">重置</Button>
         </FormItem>
       </Form>
     </div>

@@ -10,7 +10,7 @@
   <div class="login">
     <div class="login-form">
       <h1 style="color:#333;margin-bottom:40px;">Myblog Admin Register</h1>
-      <Form :label-width="80 " :rules="ruleInline" ref="submit" :model="submit">
+      <Form :label-width="80 " :rules="ruleInline" ref="submit" :model="submit" @keyup.native.enter="handleSubmit">
         <FormItem label="账号：" :label-width="100" prop="username">
           <Input type="text" placeholder="请输入您的账号" v-model="submit.username">
             <Icon type="ios-person-outline" slot="prepend"></Icon>
