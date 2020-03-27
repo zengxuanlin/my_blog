@@ -26,9 +26,9 @@
             <Icon type="ios-lock-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
-        <FormItem label="验证码：" :label-width="100" prop="code">
+        <FormItem label="验证码：" :label-width="100">
           <div class="flex">
-            <Input type="text" style="width:40%;margin-right:30px" v-model="submit.code">
+            <Input type="text" style="width:40%;margin-right:30px" v-model="verCode">
              <Icon type="ios-megaphone-outline" slot="prepend"></Icon>
             </Input>
             <canvas id="myCanvas"></canvas>
@@ -54,9 +54,10 @@ export default {
         username: "",
         password: "",
         confirmPassword: "",
-        code: ""
+        
       },
       createC: "",
+      verCode:'',
       ruleInline: {
         username: [
           {
@@ -101,21 +102,6 @@ export default {
             }
           }
         ],
-        code: [
-          {
-            required: true,
-            trigger: "blur",
-            validator: (rule, value, callback) => {
-              if (value === "") {
-                callback(new Error("请输入验证码"));
-              } else if (value !== this.createC) {
-                callback(new Error("验证码填写错误"));
-              } else {
-                callback();
-              }
-            }
-          }
-        ]
       }
     };
   },
@@ -126,6 +112,10 @@ export default {
     handleSubmit() {
       this.$refs["submit"].validate(valid => {
         if (valid) {
+          if(this.verCode !== this.createC){
+            this.$Message.warning('验证码输入错误')
+            return
+          }
           this.$ajax.post('/blog/register',this.submit).then(res=>{
             if(res.success){
               this.$Message.success(res.message,'请登录')
@@ -134,7 +124,7 @@ export default {
             }
             this.$Message.warning(res.message)
             this.createCode()
-            this.submit.code = '';
+            this.verCode = '';
             this.submit.username = '';
           })
         } 
@@ -150,6 +140,7 @@ export default {
       console.log(this.submit);
     },
     createCode() {
+      this.createC = '';
       var c = document.getElementById("myCanvas");
       var ctx = c.getContext("2d");
       c.width = "120";
