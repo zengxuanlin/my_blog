@@ -59,11 +59,12 @@ export default {
       this.$Spin.show();
       let res = await this.$ajax.post("/blog/login", this.submit);
       this.$Spin.hide();
-      this.$Message.success(res.message);
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("home_id", res.data.home_id);
-        this.$router.push({ path: "/admin/articles-list" });
+        // this.$router.push({ path: "/admin/articles-list" });
+        this.$Message.success('登录成功,即将跳转到主页')
+        setTimeout(()=>this.$router.push({path:`/home/${res.data.home_id}`}),3000)
       }
     },
     createCode() {

@@ -45,7 +45,7 @@
         <FormItem label="来自：">
           <Input style="width:50%;" v-model="info.address"></Input>
         </FormItem>
-        <FormItem label="Text">
+        <FormItem label="签名：">
           <Input
             type="textarea"
             :autosize="{minRows: 2,maxRows: 5}"
@@ -55,7 +55,6 @@
         </FormItem>
         <FormItem>
           <Button type="primary" @click="save">确定</Button>
-          <Button style="margin-left: 8px">Cancel</Button>
         </FormItem>
       </Form>
     </Card>

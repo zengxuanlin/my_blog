@@ -28,8 +28,8 @@ class User(db.Model):
     avatar = db.Column(db.Text, default=None)
     sign = db.Column(db.Text, default=None)
     createTime = db.Column(db.DateTime, default=datetime.datetime.now)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id', ondelete='CASCADE'))
-    articles = db.relationship('Article', backref='articles',cascade='all, delete-orphan', passive_deletes = True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    articles = db.relationship('Article', backref='articles')
     home_id = db.Column(db.String(255),default=None)
     def __init__(self, username, password, role_id,home_id):
         self.username = username
@@ -73,7 +73,7 @@ class Role(db.Model):
 class Article(db.Model):
     __tablename__ = 'article'
     id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.String(64), db.ForeignKey('users.id'),ondelete = 'CASCADE')
+    author_id = db.Column(db.String(64), db.ForeignKey('users.id'))
     title = db.Column(db.String(64))
     content = db.Column(db.Text)
     time = db.Column(db.DateTime, default=datetime.datetime.now,
@@ -96,12 +96,12 @@ class Article(db.Model):
 class Comment(db.Model):
     __tablename__ = 'comment'
     id = db.Column(db.Integer, primary_key=True)
-    fromId = db.Column(db.Integer, db.ForeignKey('article.id',ondelete = 'CASCADE'))
+    fromId = db.Column(db.Integer, db.ForeignKey('article.id'))
     name = db.Column(db.String(64))
     content = db.Column(db.String(64))
     time = db.Column(db.DateTime, default=datetime.datetime.now,
                      onupdate=datetime.datetime.now)
-    comments = db.relationship('Article', backref='art',cascade='all, delete-orphan', passive_deletes = True)
+    comments = db.relationship('Article', backref='art')
 
     def __init__(self, fromId, name, content):
         self.fromId = fromId

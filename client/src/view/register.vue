@@ -12,7 +12,7 @@
       <h1 style="color:#333;margin-bottom:40px;">Myblog Admin Register</h1>
       <Form :label-width="80 " :rules="ruleInline" ref="submit" :model="submit" @keyup.native.enter="handleSubmit">
         <FormItem label="账号：" :label-width="100" prop="username">
-          <Input type="text" placeholder="请输入您的账号" v-model="submit.username">
+          <Input type="text" placeholder="请输入 不能超过十六位" v-model="submit.username">
             <Icon type="ios-person-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
@@ -62,8 +62,21 @@ export default {
         username: [
           {
             required: true,
-            message: "请填写用户名",
-            trigger: "blur"
+            trigger: "blur",
+            validator: (rule, value, callback) => {
+              let reg = new RegExp("[\\u4E00-\\u9FFF]+","g");
+              if (reg.test(value)) {
+                callback(new Error("不能含有中文字符"));
+              } else if (value.length > 16) {
+                callback(new Error("账号长度不能超过十六位"));
+              } else if (/^[a-zA-Z][a-zA-Z0-9_]{4,15}$/.test(value)) {
+                callback();
+              }else if (value.length < 6) {
+                callback(new Error("账号长度不能小于六位"));
+              }else {
+                callback(new Error("账号格式不正确"));
+              }
+            }
           }
         ],
         password: [
@@ -116,17 +129,18 @@ export default {
             this.$Message.warning('验证码输入错误')
             return
           }
-          this.$ajax.post('/blog/register',this.submit).then(res=>{
-            if(res.success){
-              this.$Message.success(res.message,'请登录')
-              this.$router.push('/login')
-              return
-            }
-            this.$Message.warning(res.message)
-            this.createCode()
-            this.verCode = '';
-            this.submit.username = '';
-          })
+          // delete this.submit['confirmPassword']
+          // this.$ajax.post('/blog/register',this.submit).then(res=>{
+          //   if(res.success){
+          //     this.$Message.success(res.message,'请登录')
+          //     this.$router.push('/login')
+          //     return
+          //   }
+          //   this.$Message.warning(res.message)
+          //   this.createCode()
+          //   this.verCode = '';
+          //   this.submit.username = '';
+          // })
         } 
       });
       //   if (!this.submit.password) {

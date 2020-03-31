@@ -5,7 +5,11 @@
 
       <div class="error">
         <Icon type="ios-alert" size="80" color="#19be6b" />
-        <h3 style="margin-left:20px">这是一个博客DEMO...每个人都可以有自己的主页</h3>
+        <h3 style="margin-left:20px">这是一个博客DEMO...</h3>
+        <router-link to="/register">点击这里</router-link>
+        创建个人blog,
+        如果已创建,
+        <router-link to="/login">请登录</router-link>
       </div>
       <Footer class="layout-footer-center">2011-2020 &copy; My Blog</Footer>
     </Layout>
@@ -15,8 +19,8 @@
 <script>
 import zHeader from "../components/header";
 export default {
-  components:{zHeader}
-}
+  components: { zHeader }
+};
 </script>
 
 <style scoped>
@@ -49,5 +53,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+a{
+  margin-left:10px;
 }
 </style>

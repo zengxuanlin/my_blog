@@ -16,6 +16,7 @@
       v-model="submit.mdText"
       ref="md"
       @change="change"
+      @imgAdd="handleImgUpload"
       style="min-height: 500px;overflow:auto;max-height:70vh;z-index:999"
     
     />
@@ -65,16 +66,34 @@ export default {
     },
     // 提交
     handleSubmit() {
-      // console.log(this.submit.mdText)
-      // return false
-      // console.log(this.content);
-      // console.log(this.htmlContent);
+      if(!this.submit.title){
+        this.$Message.warning('请填写标题')
+        return
+      }
+      if(!this.submit.mdText){
+        this.$Message.warning('请填写内容')
+        return
+      }
       this.$ajax.post(`/blog/publishArticle`,this.submit).then(res=>{
         if(res.success){
           this.$Message.success(res.message)
           this.$router.push({name:'articles-list'})
         }
       })
+    },
+    async handleImgUpload(index,file){
+      let fileName = file.name;
+      let content = this.submit.mdText;
+      let formdata = new FormData()
+      formdata.append('file', file)
+      let res = await this.$ajax.post('/blog/upload',formdata)
+      this.$Message.success('上传成功')
+      this.$refs.md.$img2Url(index,'http://118.89.125.57/images/'+res.data.uploadUrl)
+      // if(content.includes(fileName)){
+      //   let sIndex = content.indexOf(`(${index})`);
+      //   let reText = content.slice(sIndex)
+      //   let str = content.replace()
+      // }
     }
   },
 

@@ -31,6 +31,7 @@ instance.interceptors.response.use(res=>{
         vueInstance.$Message.error('服务器错误')
     }
 },error=>{
+    vueInstance.$Message.error('服务器发生错误') 
     return Promise.reject(error)
 })
 
