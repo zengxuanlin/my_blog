@@ -45,8 +45,7 @@ def register():
         post_data = post_json()
         user = User.query.filter_by(username=post_data['username']).first()
         if user is None:
-            new_user = User(post_data['username'],
-                            post_data['password'], '2', get_short_id())
+            new_user = User(post_data['username'],post_data['password'], '2', get_short_id())
             db.session.add(new_user)
             db.session.commit()
             return responseData('创建成功', None)
