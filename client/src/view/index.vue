@@ -13,7 +13,7 @@
       <Layout :style="{padding: '0 50px'}" v-if="loaded">
         <Content :style="{padding: '24px 0', minHeight: '280px'}">
           <Layout :gutter="30">
-            <Row style="background:#fff;height:90vh;posi">
+            <Row style="background:#fff;">
               <Col :span="6">
                 <z-sider :info="myInfo"></z-sider>
               </Col>
@@ -22,7 +22,7 @@
                   :style="{padding: '24px', minHeight: '280px', background: '#fff',textAalign:'left'}"
                 >
                   <artices :arts="all"></artices>
-                  <Page :total="total" class="page" show-elevator @on-change="onChangePageNum"  />
+                  <Page :total="total" class="page" show-elevator @on-change="onChangePageNum"  :page-size="5" />
                 </Content>
               </Col>
               
@@ -74,7 +74,9 @@ export default {
             for (let item of res.data.list) {
               item.total = item.commonts.length;
             }
+           
             this.total = parseInt(res.data.total)
+             console.log(this.total)
           }
         });
     },
@@ -113,8 +115,5 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.page{
-  position: absolute;
-  bottom: 5%;
-}
+
 </style>

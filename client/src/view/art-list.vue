@@ -15,7 +15,7 @@
         <Button type="primary" @click="handleView(row)">查看</Button>
       </template>
     </Table>
-    <Page :total="data1.total" style="margin-top:4rem" show-total @on-change="onChangePageNum"/>
+    <Page :total="data1.total" style="margin-top:4rem" show-total @on-change="onChangePageNum" :page-size="5" />
     </Card>
     <!-- <Drawer title="详情" :closable="false" v-model="showDetail" width="70">
       <div v-html="content"></div>

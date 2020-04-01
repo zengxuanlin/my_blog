@@ -15,7 +15,7 @@
           {{row.remarkTime | gmtToDate}}
         </template>
       </Table>
-      <Page :total="data1.total" style="margin-top:4rem" show-total @on-change="onChangePageNum" />
+      <Page :total="data1.total" style="margin-top:4rem" show-total @on-change="onChangePageNum" :page-size="5"/>
     </Card>
     <Modal v-model="show" title="留言内容">
       <p>{{content}}</p>

@@ -38,7 +38,7 @@ def login():
     if request.method == 'GET':
         pass
 
-# 登陆
+# 注册
 @blog.route('/register', methods=['POST'])
 def register():
     if request.method == 'POST':
