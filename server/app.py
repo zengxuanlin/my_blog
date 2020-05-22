@@ -2,7 +2,6 @@ from flask_cors import *
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from dbConfig import getUrl
-from flask_cors import CORS
 from blog_api import blog
 
 from ext import db
