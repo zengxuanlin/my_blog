@@ -129,29 +129,20 @@ export default {
             this.$Message.warning('验证码输入错误')
             return
           }
-          // delete this.submit['confirmPassword']
-          // this.$ajax.post('/blog/register',this.submit).then(res=>{
-          //   if(res.success){
-          //     this.$Message.success(res.message,'请登录')
-          //     this.$router.push('/login')
-          //     return
-          //   }
-          //   this.$Message.warning(res.message)
-          //   this.createCode()
-          //   this.verCode = '';
-          //   this.submit.username = '';
-          // })
+          delete this.submit['confirmPassword']
+          this.$ajax.post('/blog/register',this.submit).then(res=>{
+          if(res.success){
+               this.$Message.success(res.message,'请登录')
+               this.$router.push('/login')
+               return
+             }
+             this.$Message.warning(res.message)
+             this.createCode()
+             this.verCode = '';
+             this.submit.username = '';
+           })
         } 
       });
-      //   if (!this.submit.password) {
-      //   }
-      //   if (this.code !== this.createC) {
-      //     this.$Message.error("验证码输入错误");
-      //     return;
-      //   }
-
-      //   this.$Spin.show();
-      console.log(this.submit);
     },
     createCode() {
       this.createC = '';
