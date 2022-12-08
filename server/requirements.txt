@@ -2,7 +2,7 @@ aes==1.0.0
 alembic==1.4.1
 astroid==2.3.3
 autopep8==1.5
-certifi==2019.11.28
+certifi==2022.12.7
 chardet==3.0.4
 Click==7.0
 colorama==0.4.3
